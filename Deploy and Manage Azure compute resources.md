@@ -138,7 +138,7 @@ To run scripts, installings etc.
 - Both availability sets abd av zone does not replicate the app. Both giving iaas service.
 
 ## Scale sets
-- Same sa other 2 data/app is not replicating
+- Same as other 2 data/app is not replicating
 - No additional cost for using scale sets. You are charged based on the compute, network, and storage resources that the scale set uses.
 - Scale is another azure resource and VM are attached to that.
 - Manual scaling and Auto scaling with rules
