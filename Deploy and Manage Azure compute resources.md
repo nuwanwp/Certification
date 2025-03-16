@@ -201,7 +201,9 @@ To run scripts, installings etc.
 
 ## APP service plan
 - An Azure App Service plan defines a set of compute resources for a web app to run
-- Shared/ Dedicated / Isolated
+- Shared (Free, Shared)/ Dedicated (Basic, Standard, Premium) / Isolated (IsolatedV2)
+- Auto-scaling for Azure web apps can only be configured for web apps that are part of the Standard App Service Plan or higher.
+  
 - **Cost of App Service plans**
 - Shared tier: Each app receives a quota of CPU minutes, so each app is charged for the CPU quota.
 - Dedicated compute tiers (Basic, Standard, Premium, PremiumV2, PremiumV3): The App Service plan defines the number of VM instances that the apps are scaled to, so each VM instance in the App Service plan is charged
@@ -230,14 +232,14 @@ Azure Container Registry is a managed registry service based on the open-source 
 ## Container instance
 - Azure Container Instances enables exposing your container groups directly to the internet with an IP address and a fully qualified domain name (FQDN). When you create a container instance, you can specify a custom DNS name label so your application is reachable
 - az container create (Azure CLI command)
-- Resource allocation.
-- If you don't specify a resource limit, the container instance's maximum resource usage is the same as its resource request.
-- If you specify a limit for a container instance, the instance's maximum usage could be greater than the request, up to the limit you set
 
 ## Container Groups
 - Have to deploy using yml for ARM template
 - A container group is a collection of containers that get scheduled on the same host machine. The containers in a container group share a lifecycle, resources, local network, and storage volumes
-
+- Resource allocation.
+- If you don't specify a resource limit, the container instance's maximum resource usage is the same as its resource request.
+- If you specify a limit for a container instance, the instance's maximum usage could be greater than the request, up to the limit you set
+- 
 ## Container apps
 - Azure Container Apps is a serverless platform that allows you to maintain less infrastructure and save costs while running containerized applications.
 - Applications built on Azure Container Apps can dynamically scale based on the following characteristics:
@@ -250,4 +252,6 @@ Also we can deploy container based app using Azure web apps
 ## Note
 - Resource group is a logical grouping. Since changing it doesnot change any thing.
 - Resource group is locagical groups doesn't cost
-- 
+- To resize one of the VMs in availability set all should have to stop
+-  Add-AzVhd cmdlet uploads an on-premise virtual hard disk to a managed disk or a blob storage account.
+-  The Linux diagnostic extension helps a user monitor the health of a Linux VM running on Microsoft Azure
