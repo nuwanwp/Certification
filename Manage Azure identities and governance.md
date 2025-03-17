@@ -108,11 +108,30 @@ NOTE :-
 - organization with strict compliance requirements and no hybrid identity - Federation with ADFS
 - Entra ID role
 - 1. Application Administrator	- Can create and manage all aspects of app registrations and enterprise apps.
-  2. Authentication Administrator - Can access to view, set and reset authentication method information for any non-admin user.
+  2. Authentication Administrator - Can access to view, set and reset authentication method information for any non-admin user. Can modify security questions in the SSPR settings
   3. Conditional Access Administrator	 - Can manage Conditional Access capabilities.
   4. Password Administrator	- Can reset passwords for non-administrators and Password Administrators.
   5. User Administrator - 	Can manage all aspects of users and groups, including resetting passwords for limited admins.
   6. Privileged Role Administrator -	Can manage role assignments in Microsoft Entra ID, and all aspects of Privileged Identity Management.
-
+  7. Security Administrator - Azure role allows the user to configure, manage, and monitor security-related policies across the subscription, but does not allow access to resources
+- Privileged Identity Management provides time-based and approval-based role activation to mitigate the risks of excessive, unnecessary, or misused access permissions on resources that you care about.
+- Just-in-Time (JIT) role activation with Privileged Identity Management (PIM) -  enforce the principle of least privilege
+- enforce that only compliant devices can access sensitive applications in Azure - Use a Conditional Access policy with device compliance requirements
+- System-assigned identities are automatically deleted when the resource is deleted, while user-assigned identities persist
+- FIDO2 Security Keys - password less authetication is the most secured for AD
+- Azure Activity Log - Azure service helps enforce compliance by auditing resource changes and role
+- Microsoft Entra Connect features
+- 1. Password hash synchronization - A sign-in method that synchronizes a hash of a users on-premises AD password with Microsoft Entra ID.
+  2. Pass-through authentication - A sign-in method that allows users to use the same password on-premises and in the cloud, but doesn't require the additional infrastructure of a federated environment.
+  3. Synchronization - Responsible for creating users, groups, and other objects.
+  4. Health Monitoring - Microsoft Entra Connect Health can provide robust monitoring
+- Dynamic Groups - allows you to automatically assign roles to users based on membership in a group
+- Giving access to a temporary Microsoft SharePoint document library named Library1. You need to create groups for the users
+  - 1. a Microsoft 365 group that uses the Dynamic User membership type
+  - 2. a Microsoft 365 group that uses the Assigned membership type
+ - Group-based Entra ID licensing currently doesn't support groups that contain other groups (nested groups)
+- From Cross-tenant access settings, configure the Tenant restrictions settings - to specify which tenants users can access
+- External collaboration settings, configure the Collaboration restrictions settings - you can ensure that invitations can only be sent to users from that domain
+- 
 
 
