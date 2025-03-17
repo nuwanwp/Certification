@@ -86,6 +86,7 @@ No computation cost, only cost for disk and IP, Data in the temporary disk isn't
 - There are several types of encryption available for your managed disks, including **Azure Disk Encryption** (ADE), **Server-Side Encryption** (SSE), and **encryption at host**.
 - VM temporary storage goes away when restarting. Only data disk and OS disk remains.
 - Disk snapshot can be created from Disk Snaphot serive and create back disk and attached to VM
+- Upgrade a disk type directly from Standard HDD to Premium SSD via the Azure Portal or Azure CLI, without detaching the disk.
 
 ## Disk Encryption (no extra cost)
 - **Azure Disk Storage Server-Side Encryption** (PMK and Custom Managed Keys through the Key Vault) encryption-at-rest - AES-256
