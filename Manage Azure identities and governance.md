@@ -36,8 +36,8 @@ Note :- VM should be registed with the EntraNet
 
 ## Entra ID licensing
 - Free / P1/ P2
--  PI provides nybrid user acccess both on-prem and clod resources,MFA for on-premises applications,  conditional access, dynamic memberships, SSPR with writeback , self service password reset for onprem users (6$ per user per month)
--  P3 is giving risk based conditional access, SSPR with writeback to your apps. (9$ per user per month)
+-  P1 provides nybrid user acccess both on-prem and clod resources,MFA for on-premises applications,  conditional access, dynamic memberships, SSPR with writeback , self service password reset for onprem users (6$ per user per month)
+-  P2 is giving risk based conditional access, SSPR with writeback to your apps. (9$ per user per month)
 
 # Assign licenses to users / groups
 -  User location have to set
@@ -102,3 +102,17 @@ NOTE :-
  - Licenses are not automatically provisioned when a new user is created in Microsoft Enterprise ID.
  - Each user in Microsoft Enterprise ID can have multiple licenses assigned to them, depending on the services and features they require access to
  - Policies can be used to enforce tags on resources.
+ - In policy definition The mode determines which resource types are evaluated for a policy definition. The supported modes are:
+ - 1. all: evaluate resource groups, subscriptions, and all resource types
+ - 2. indexed: only evaluate resource types that support tags and location
+- organization with strict compliance requirements and no hybrid identity - Federation with ADFS
+- Entra ID role
+- 1. Application Administrator	- Can create and manage all aspects of app registrations and enterprise apps.
+  2. Authentication Administrator - Can access to view, set and reset authentication method information for any non-admin user.
+  3. Conditional Access Administrator	 - Can manage Conditional Access capabilities.
+  4. Password Administrator	- Can reset passwords for non-administrators and Password Administrators.
+  5. User Administrator - 	Can manage all aspects of users and groups, including resetting passwords for limited admins.
+  6. Privileged Role Administrator -	Can manage role assignments in Microsoft Entra ID, and all aspects of Privileged Identity Management.
+
+
+
