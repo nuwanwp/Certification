@@ -272,3 +272,4 @@ Also we can deploy container based app using Azure web apps
    3. The tag name has a limit of 512 characters and the tag value has a limit of 256 characters
 - Azure Virtual Machine Scale Sets do not support different VM sizes and configurations within the same scale set
 - ACR Webhooks allow automated deployment updates by triggering an action when a new approved image is pushed to the Azure Container Registry (ACR).
+- Converting unmanaged disks to managed disks allows you to take advantage of Azure's built-in encryption capabilities and management features, which can help enhance the security of data at rest within your virtual machines.
