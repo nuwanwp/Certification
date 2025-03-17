@@ -232,6 +232,7 @@ Azure Container Registry is a managed registry service based on the open-source 
 ## Container instance
 - Azure Container Instances enables exposing your container groups directly to the internet with an IP address and a fully qualified domain name (FQDN). When you create a container instance, you can specify a custom DNS name label so your application is reachable
 - az container create (Azure CLI command)
+- for small workload
 
 ## Container Groups
 - Have to deploy using yml for ARM template
@@ -248,10 +249,25 @@ Azure Container Registry is a managed registry service based on the open-source 
     CPU or memory load
 
 Also we can deploy container based app using Azure web apps
-  
+
+## App Service Environment
+- App Service Environment (ASE) is a fully isolated and dedicated environment for running App Service apps securely at high scale
+- Higher Performance & Isolation → Dedicated compute resources ensure low latency and high performance.
+-  Stronger Security → Fully controlled VNet integration, private IPs, and network security controls.
+-  Scalability → Can scale up to 200 instances with autoscaling.
+-  Compliance Support → Meets regulatory standards for sensitive applications (Finance, Healthcare, etc.).
+-  Advanced Networking → Supports ExpressRoute, VPN Gateway, and network security policies.
+-  Custom Domains & SSL → Enables secure access via custom domains with TLS/SSL support.
+
 ## Note
 - Resource group is a logical grouping. Since changing it doesnot change any thing.
 - Resource group is locagical groups doesn't cost
 - To resize one of the VMs in availability set all should have to stop
 -  Add-AzVhd cmdlet uploads an on-premise virtual hard disk to a managed disk or a blob storage account.
 -  The Linux diagnostic extension helps a user monitor the health of a Linux VM running on Microsoft Azure
+-  Azure tags to enforce a naming convention, To organize resources for chargeback (cost tracking)
+-  1. Not all resource types support tags
+   2. Each resource, resource group, and subscription can have a maximum of 50 tag name-value pairs
+   3. The tag name has a limit of 512 characters and the tag value has a limit of 256 characters
+- Azure Virtual Machine Scale Sets do not support different VM sizes and configurations within the same scale set
+- ACR Webhooks allow automated deployment updates by triggering an action when a new approved image is pushed to the Azure Container Registry (ACR).
