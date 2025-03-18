@@ -42,7 +42,9 @@ Note :- VM should be registed with the EntraNet
 # Assign licenses to users / groups
 -  User location have to set
 -  We have to user mincrosoft admin center
--  Group cann be delete if license is associated with this. Unassociated the license first
+-  Group cannot be delete if license is associated with this. Unassociated the license first
+-  Azure AD user can be removed from a group even if the group has an assigned license
+  
 
 # Self service password reset
 -  Rquire p1 or p2 license
@@ -135,6 +137,9 @@ NOTE :-
  - Group-based Entra ID licensing currently doesn't support groups that contain other groups (nested groups)
 - From Cross-tenant access settings, configure the Tenant restrictions settings - to specify which tenants users can access
 - External collaboration settings, configure the Collaboration restrictions settings - you can ensure that invitations can only be sent to users from that domain
+- Standard SKU Azure container registry doesnot support geo-replication. only the premium ones
+- By default, Azure applies a two-gate password reset policy for all administrator accounts. This two-gate policy requires two pieces of authentication data, such as an email address, authenticator app, or phone number, and does not permit the use of security questions for administrators. 
+
 
 
 
