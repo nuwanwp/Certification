@@ -7,7 +7,7 @@
 - Can assign permission on subscription level, resource group level or resource it self
 - Data actions means what we can perform on data within a resource
 
-# Vierual Machine permissions
+# Virtual Machine permissions
  - Virtual Machine Administrator Login - View Virtual Machines in the portal and login as administrator
  - Virtual Machine Contributor - Create and manage virtual machines, manage disks, install and run software, reset password of the root user of the virtual machine using VM extensions, and manage local user accounts using VM extensions. This role does not grant you management access to the virtual network or storage account the virtual machines are connected to. This role does not allow you to assign roles in Azure RBAC.
  - Virtual Machine Local User Login - View Virtual Machines in the portal and login as a local user
@@ -20,7 +20,7 @@ Note :- VM should be registed with the EntraNet
 
 # Entra ID role
 - RBAC are giving inside the suscription. But Entra ID roles given permission to carry out within the Entra ID it self.
-- To create custome role in Mentra ID we should have premium p1 or p2 license for Entra ID
+- To create custom role in entra ID we should have premium p1 or p2 license for Entra ID
 - Global Administrator - Can manage all aspects of Microsoft Entra ID and Microsoft services that use Microsoft Entra identities.
 
  ## Diffrence of Azure role and Entra ID role
@@ -61,19 +61,22 @@ Note :- VM should be registed with the EntraNet
 - Delete and Read Only locks
 
 ## Azure advisor tool
-- Giving recommmendations for perfromance, relaibility, cost effectiveness
-- Hepls govern the rules, and define rules in resources to comply
-- Advisory rules can be defined in subscrition and resourc egroup level
-- Two types of policies. Aloow and 
+- Giving recommmendations for perfromance, relaibility, cost effectiveness and security
+
 
 # Azure policy
-Can be used to defined the policies.
+- Can be used to defined the policies.
+- Hepls govern the rules, and define rules in resources to comply by
+- Advisory rules can be defined in subscrition and resource group level
+- Two types of policies. Allow or Deny
 
 #Management groups
 - helps to manage different subscriptions
 - if permission grant on management group this will be affecting all the resource in subcscription
 - Azure polies can be assgined to Management groups
 - helps to enforce compliance with seccurity standards
+- The root management group can't be moved or deleted, unlike other management groups.
+- No one has default access to the root management group. Microsoft Entra Global Administrators are the only users who can elevate themselves to gain access
 
 
 NOTE :- 
@@ -132,6 +135,6 @@ NOTE :-
  - Group-based Entra ID licensing currently doesn't support groups that contain other groups (nested groups)
 - From Cross-tenant access settings, configure the Tenant restrictions settings - to specify which tenants users can access
 - External collaboration settings, configure the Collaboration restrictions settings - you can ensure that invitations can only be sent to users from that domain
-- 
+
 
 
