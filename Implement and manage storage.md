@@ -125,4 +125,16 @@
 - No tier change option
   
 
-  
+  NOTE
+  - We can update Encryption type once account is created.
+  - Azure blob container can only be backed up in Azure Backup vault as it supports Azure blob storage service. Azure Recovery service vault on the other hand does not support Azure Blob storage.
+  - Azure file share can only be backed up in Azure RS vault as it supports Azure file share service. Azure Backup vault on the other hand does not support Azure File Share.
+  - Simply having the role of Global Admin does not allow the user access to file share data
+  - read access to the content of blob storage. Hence User1 cannot read File1 content inside container.
+  -  Storage Account Contributor role has all the permissions to manage a storage account, but not access to it
+  -  Azure file shares can only be mounted to container instances that are in the same region as the storage account.
+  -  ZRS ensures data residency by keeping the data within the same region, which complies with data sovereignty requirements.
+  -  ExpressRoute private peering allows on-premises resources to access Azure resources directly, bypassing firewall rules that apply to public endpoints.
+  -  Low latency, High transaction throughput, Global read access - Block Blob Storage account with RA-GRS
+  -  Private Endpoints ensure secure access to the Azure File Share without exposing it over the internet.
+  -  Using VPN (or ExpressRoute private peering) allows on-premises servers to securely access the Azure File Share without requiring internet-based SMB access.
