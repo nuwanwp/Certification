@@ -11,23 +11,22 @@
 - **Standard** storage accounts are backed by magnetic hard disk drives (HDD). A standard storage account provides the lowest cost per GB. You can use Standard storage for applications that require bulk storage or where data is infrequently accessed.
 
 - **Premium** storage accounts are backed by solid-state drives (SSD) and offer consistent low-latency performance. You can use Premium storage for Azure virtual machine disks with I/O-intensive -applications like databases.
--
+
 - 1. General-purpose v2 Standard
   2. Block blob Premium / 190.7TB
-  3. Append blobs Premium / for vm loggin
+  3. Append blobs Premium / for vm loggings
   4. Page blobs Premium / 8tb / vhd files, disks
 
   - Naming of stroage account and containers
   - account name, blob names are case sentive
 
 ## Architecture
-
 - 1. Reliability
   - ZRS and GZRS give max availability and durability as redundency options
 - 2. Security
 - 3. Cost Optimization
 - 4. Azure policies
-- 5. Azure Advisor (Reliability,Security,Cost Optimization,Performance,Operational Excellence)
+- 5. Azure Advisor (Reliability,Security,Cost Optimization,Performance,Operational Excellence). Cannot create alerts from advisor
 
 ## Quickstart
 
@@ -96,7 +95,6 @@
 
      az storage blob download --account-name <storage-account> --container-name <container> --name myFile.txt --file <~/destination/path/for/file> --auth-mode login
 
-     az storage account delete --name <storage-account> --resource-group <resource-group>
   ```
 
 ## Storage account overview
@@ -131,7 +129,7 @@ Recall each endpoint UNC path for each type
   4. Capacity
   5. Redundancy
   6. Transactions
-  7. DAta egress (data transferred out of an Azure region)
+  7. Data egress (data transferred out of an Azure region)
 
 ## Storage account Different SKUs
 
@@ -157,7 +155,7 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 
 ## Container
 
-- RBAC can be assigned to container level and blob level
+- RBAC can be assigned to storage account level and container level
 - SAS also same as container level and blob level
 
 ## Lifecycle management policies
@@ -226,7 +224,7 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 ## Access Keys
 
 - Giving complete access to all storage types (blob, files, queus and tables). Storage account level
-- ![image](https://github.com/user-attachments/assets/78bc835f-b585-453d-840a-ef6370fbe398)
+ ![image](https://github.com/user-attachments/assets/78bc835f-b585-453d-840a-ef6370fbe398)
 
 ## Shared access signatures
 
@@ -240,7 +238,7 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 
 ## Versioning
 
-- Soft delete is blob level and container level featrues
+- Soft delete is feature available in Account level and it effect to both blob level and container level
 - Blob versioning is available for general-purpose v2, block blob, and Blob storage accounts
 - Versioning is not supported for accounts that have a hierarchical namespace.
 - When versioning is enabled, selecting the Undelete button on a deleted blob restores any soft-deleted versions or snapshots, but does not restore the base blob. To restore the base blob, you must promote a previous version.
@@ -255,12 +253,12 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - Soft delete,Change feed,Blob versioning shoudld be enabled.
 - The retention period for point-in-time restore must be at least one day less than the retention period specified for soft delete.
 - Point-in-time restores support only block blobs, not page or append blobs. While the restore is happening, containers and blobs cannot be read or written to.
-  http://storagesample.core.blob.windows.net/mydrives/myvhd?snapshot=2011-03-09T01:42:34.9360000Z
-
+  
 ## Blob snapshots
 
 - A snapshot is a read-only version of a blob that's taken at a point in time.
 - A snapshot of a blob is identical to its base blob, except that the blob URI has a DateTime value appended to the blob URI to indicate the time at which the snapshot was taken
+ http://storagesample.core.blob.windows.net/mydrives/myvhd?snapshot=2011-03-09T01:42:34.9360000Z
 - You can create a snapshot of a blob in the hot or cool tier. Snapshots on blobs in the archive tier aren't supported.
 - By default, when you delete a base blob in Azure Blob Storage, all of its snapshots are deleted as well.
 
@@ -301,8 +299,9 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 ## Azure FIle share types
 
 - 1. Transaction optimized
-  2. Hot
-  3. Cool
+-  2. Hot
+-  3. Cool
+-   4. Premium
 
 ## Data encription
 
@@ -314,7 +313,7 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - Server side and Client side (client side is encrypt data before upload)
 - You can use encryption scopes to create secure boundaries between data that resides in the same storage account but belongs to different customers.
 - When you upload a new blob with an encryption scope, you cannot change the default access tier for that blob also cannot set to archive tier
-- Once an encryption scope is created, it is tied to data encryption, and deletion could compromise data security
+- Once an encryption scope is created, it is tied to data encryption, and deletion could compromise data security and cannot delete.
 
 ## Networking
 
