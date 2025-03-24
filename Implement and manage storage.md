@@ -434,7 +434,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - UNC path format \\<storageAccountName>.file.core.windows.net\<fileShareName>
 - File share names can contain only lowercase letters, numbers, and hyphens, and must begin and end with a letter or a number. The name cannot contain two consecutive hyphens.
 - supports Snaphots in file share (help against application error and data corruption)
--
 
 - Azure Files supports the following mechanisms to tunnel traffic between your on-premises workstations and servers and Azure SMB/NFS file shares
 - virtual network gateway is seperate resource it provide VPN or Express route
