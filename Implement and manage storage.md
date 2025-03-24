@@ -146,6 +146,7 @@ Recall each endpoint UNC path for each type
 
 - CannotDelete
 - ReadOnly - list key is post operation and all post methods are blocked. lock does not invalidate previously issued access keys. for new keys has come through the Entra ID
+- When having delete lock it is not possible to delete the storage account as well.
 
 NOTE :- Data in Azure Files or the Table service may become unaccessible to clients who have previously been accessing it with the account keys. As a best practice, if you must apply a ReadOnly lock to a storage account, then move your Azure Files and Table service workloads to a storage account that is not locked with a ReadOnly lock.
 
