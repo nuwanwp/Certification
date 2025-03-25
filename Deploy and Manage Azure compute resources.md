@@ -51,7 +51,7 @@ Install nginx
 Shutdown VM itself not deallocating, some cost is calculating. Whole VM deallocating when perform shutdown form Portal
 No computation cost, only cost for disk and IP, Data in the temporary disk isn't persisted. E and D series only
 
-## Size
+## CPU Size
 - General purpose  A,B,D (A - Entry-level economical,B -  Burstable, D - Enterprise-grade applications, Relational databases, In-memory caching, Data analytics)
 - Compute optimized F (Medium traffic web servers,Network appliances,Batch processes,Application servers)
 - Memory optimized E (Relation databases, Medium to large caches)
@@ -67,6 +67,76 @@ No computation cost, only cost for disk and IP, Data in the temporary disk isn't
 - Generation 2 VMs use the new UEFI-based boot architecture rather than the BIOS-based architecture but no price difference.
 - Azure Compute offers virtual machine sizes that are Isolated to a specific hardware type and dedicated to a single customer. The Isolated sizes live and operate on specific hardware generation and will be deprecated when the hardware generation is retired
 
+## Azure Comoute Gallery
+- Helps you build structure and organization around your Azure resources, like images and applications
+- revisit Instances section
+
+## Disk
+ - Managed disk porvides ZRS and LRS redundancy options
+ - Managed disk - Managed disks are designed for 99.999% availability. Managed disks achieve this availability by providing three replicas of your data
+ - OS level disk and Data disk (Seperate Az Resource)
+ - Azure managed disks are block-level storage volumes that are managed by Azure 
+- Disk types
+- ![image](https://github.com/user-attachments/assets/5f4a8028-84f7-4a16-9aa1-604653bf4fd8)
+  
+- Ultra Disks also feature a flexible performance configuration model that allows you to independently configure IOPS and throughput / Ultra Disks can't be used as an OS disk. / doesnot support  Compute Gallery.
+- Premium SSD v2 - transaction-intensive database may need a large amount of IOPS / gaming application may need a large amount of IOPS / can't be used as an OS disk. / doesnot support  Compute Gallery
+- Premium SSDs - suitable for mission-critical production applications/ offer disk bursting
+- Standard SSDs -  suitable for web servers, low IOPS application servers, lightly used enterprise applications, and non-production workloads / offer disk bursting
+- Standard HDDs - disks for dev/test scenarios and less critical workloads
+  
+- Manage disk has two redundancy options (LRD and ZRS)
+- ZRS replicates your Azure managed disk synchronously across three Azure availability zones in the selected region
+- There are several types of encryption available for your managed disks, including **Azure Disk Encryption** (ADE), **Server-Side Encryption** (SSE), and **encryption at host**.
+- Upgrade a disk type directly from Standard HDD to Premium SSD via the Azure Portal or Azure CLI, without detaching the disk.
+  
+
+- VM temporary storage goes away when restarting. Only data disk and OS disk remains.
+- VMs contain a temporary disk, which isn't a managed disk. The temporary disk provides short-term storage for applications and processes. It's intended for storing only data such as page files, swap files
+
+## Snapshots
+- Create snaphost (az resource) and create disk from the snapshot and attach to the VM
+- Disk snapshot can be created from Disk Snaphot serive and create back disk and attached to VM
+- Snapshots are billed based on the used size. Not for full disk size
+- Managed disks support creating managed custom images.
+- Images versus snapshots (A snapshot is a copy of a disk at a point in time. It applies only to one disk. If you have a VM that has one disk (the OS disk), you can take a snapshot or an image of it and create a VM from either the snapshot or the image)
+
+- Managed disk size: Managed disks are billed according to their provisioned size
+- Snapshots are billed based on the size used
+
+
+## Disk Encryption (no extra cost)
+- Type of encryptions
+- 1. Azure Disk Storage Server-Side Encryption (support PMK and Custom amanged keys)/ no encrypt temp disk
+  2. Encryption at host - Virtual Machine option that enhances Azure Disk Storage Server-Side Encryption to ensure that all temp disks and disk caches are encrypted at rest and
+  3. Azure Disk Encryption - ADE encrypts the OS and data disks of Azure virtual machines (VMs) inside your VMs (bit locker)
+  4. Confidential disk encryption - binds disk encryption keys to the virtual machine's TPM and makes the protected disk content accessible only to the VM
+     
+- Azure Disk Storage Server-Side Encryption (PMK and Custom Managed Keys through the Key Vault) encryption-at-rest - AES-256
+- Azure Disk Encryption helps protect and safeguard your data to meet your organizational security and compliance commitments. Ex:- Bit Locker
+- Encryption at host is a Virtual Machine option that enhances Azure Disk Storage Server-Side Encryption to ensure that all temp disks and disk caches are encrypted at rest
+- Virtual Machines aren't rebooted during automatic key rotation.
+- When a key is either disabled, deleted, or expired, any VMs with either OS or data disks using that key will automatically shut down.
+  
+- **Restriction on custom managed keys**
+- Disks encrypted with customer-managed keys can only move to another resource group if the VM they are attached to is deallocated.  
+- If this feature is enabled for a disk with incremental snapshots, it can't be disabled on that disk or its snapshots
+- A disk and all of its associated incremental snapshots must have the same disk encryption set.](https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption?view=rest-compute-2024-11-04#restrictions)
+- Limitation of customer managed keys for snapshots
+-	Encryption key sets must be in the same subscription as your image.
+-	Encryption key sets are regional resources, so each region requires a different encryption key set.
+-	You can't go back to using platform-managed keys for encrypting those images
+- Use of Disk Encryption set
+- Disks, snapshots, and images encrypted with customer-managed keys can't be moved between subscriptions.
+- Managed disks currently or previously encrypted using Azure Disk Encryption can't be encrypted using customer-managed keys.
+- Changing disk encrption - Changes to encryption settings can only be made when the disk is unattached or the managing virtual machine(s) are deallocated.
+- Custom manage keys using KeyVault 
+1. Key Vault Adminitrator role
+2. Create Disk encryption Set (azResource)
+3. De attached disk from running vm
+4. Change the encryptio setting to use encryption set
+   
+
 ## Troubleshooting
 - Reset your RDP connection
 - Verify Network Security Group rules
@@ -75,33 +145,7 @@ No computation cost, only cost for disk and IP, Data in the temporary disk isn't
 - Check VM Resource Health
 - Reset user credentials
 - Verify routing
-
-## Disk
- - OS level disk and Data disk (Seperate Az Resource)
- - Azure managed disks are block-level storage volumes that are managed by Azure 
-- Disk types
-- ![image](https://github.com/user-attachments/assets/5f4a8028-84f7-4a16-9aa1-604653bf4fd8)
-- Manage disk has two redundancy options (LRD and ZRS)
-- ZRS replicates your Azure managed disk synchronously across three Azure availability zones in the selected region
-- There are several types of encryption available for your managed disks, including **Azure Disk Encryption** (ADE), **Server-Side Encryption** (SSE), and **encryption at host**.
-- VM temporary storage goes away when restarting. Only data disk and OS disk remains.
-- Disk snapshot can be created from Disk Snaphot serive and create back disk and attached to VM
-- Upgrade a disk type directly from Standard HDD to Premium SSD via the Azure Portal or Azure CLI, without detaching the disk.
-
-## Disk Encryption (no extra cost)
-- **Azure Disk Storage Server-Side Encryption** (PMK and Custom Managed Keys through the Key Vault) encryption-at-rest - AES-256
-- **Azure Disk Encryption** helps protect and safeguard your data to meet your organizational security and compliance commitments. Ex:- Bit Locker
-- Encryption at host is a Virtual Machine option that enhances Azure Disk Storage Server-Side Encryption to ensure that all temp disks and disk caches are encrypted at rest
-- Virtual Machines aren't rebooted during automatic key rotation.
-- **Restriction on custom managed keys**
-[- If this feature is enabled for a disk with incremental snapshots, it can't be disabled on that disk or its snapshots
-- A disk and all of its associated incremental snapshots must have the same disk encryption set.](https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption?view=rest-compute-2024-11-04#restrictions)
-- Limitation of customer managed keys for snapshots
--	Encryption key sets must be in the same subscription as your image.
--	Encryption key sets are regional resources, so each region requires a different encryption key set.
--	You can't go back to using platform-managed keys for encrypting those images
-- Use of Disk Encryption set
-
+  
 ## Azure compute galley
 - gallery, you can share your resources to everyone. disk snapshots
   
@@ -109,6 +153,7 @@ No computation cost, only cost for disk and IP, Data in the temporary disk isn't
 - Reposible for preparing initial software installation and preparing works
 - 90 minutes to run
 - Cloud Init
+- Custom extentions can be added to scale sets as well
 
 ## Boot diagnostics
 - Boot diagnostics is a debugging feature for Azure virtual machines (VM) that allows diagnosis of VM boot failures
@@ -121,6 +166,9 @@ To run scripts, installings etc.
 - Reaplly -  Reapplying your virtual machine's state
 
 ## Availability Set
+- Fault domains are used to define the group of virtual machines that share a common source and network switch. You can have up to 3 fault domains.
+- Update domains are used to group virtual machines and physical hardware that can be rebooted at the same time. You can have up to 20 update domains.
+
 - Sets place VMs in different fault domains and update domains
 - Microsoft guarantees a 99.95% SLA
 - Azure Availability Set cannot be moved directly to a different subscription.
@@ -144,6 +192,7 @@ To run scripts, installings etc.
 - Scale is another azure resource and VM are attached to that.
 - Manual scaling and Auto scaling with rules
 - Duration, Cool down parameters.
+- The VM must be in the same resource group as the scale set.
 
 - On scale-out, autoscale runs if any rule is met.
 - On scale-in, autoscale requires all rules to be met.
@@ -169,19 +218,23 @@ To run scripts, installings etc.
 -The VM must be in the same resource group as the scale set.
 
 -Limitations for attaching an existing Virtual Machine to a scale set
--The scale set must use Flexible orchestration mode.
--The VM and scale set must be in the same resource group.
--The VM and target scale set must both be zonal, or they must both be regional. You can't attach a zonal VM to a regional scale set
--The VM can't be in a ProximityPlacementGroup
--The VM can't be in an Azure Dedicated Host
--The VM must have a managed disk
+	-The scale set must use Flexible orchestration mode.
+	-The VM and scale set must be in the same resource group.
+	-The VM and target scale set must both be zonal, or they must both be regional. You can't attach a zonal VM to a regional scale set
+	-The VM can't be in a ProximityPlacementGroup
+	-The VM can't be in an Azure Dedicated Host
+	-The VM must have a managed disk
 
 - Standby pools for Virtual Machine Scale Sets
 - Standby pools for Virtual Machine Scale Sets enables you to increase scaling performance by creating a pool of pre-provisioned virtual machines.
 - Moving virtual machines between the standby pool into the scale set happens automatically whenever a scale out event is triggered
+- Standby pool size	Standby pool size = maxReadyCapacity– instanceCount
 
 -Can apply custom script both Orchestration modes to scale set (Remember latest model flag)
 
+## Azure Site Recovery
+- Site Recovery replicates workloads running on physical and virtual machines (VMs) from a primary site to a secondary location. When an outage occurs at your primary site, you fail over to secondary location
+  
 ## VM images
 - Image definition contains meta data and version info
 - Two types specialized VM images and Generic Images.
@@ -191,19 +244,31 @@ To run scripts, installings etc.
 - Once you generalize a VM in Azure, you cannot restart it because the VM is permanently marked as a generalized image.
 
 ## Proximity Groups
-- Separate azure resource
+- Separate azure resource proximity group and new vms to the proximity group
+- Defining the VM size in a Proximity Placement Group is necessary for proper resource allocation, performance optimization, and effective scaling
 - Sometime application required VM to be closer to reduce the latency. By placing them part of proximity group they will physically located close each other.
 - Proximity group assigned to data center when creating the first vm inside it and removed with the last vm.
 - When moving a resource into a proximity placement group, you should stop (deallocate) the asset first since it will be redeployed potentially into a different data center.
 
 ## Azure web app service (paas)
 - Fully managed service in App Service.
-- Azure App Service cannot be directly moved to a different region.
+
+
+## Deployment slots
+- Recall the usage of this
 
 ## APP service plan
 - An Azure App Service plan defines a set of compute resources for a web app to run
-- Shared (Free, Shared)/ Dedicated (Basic, Standard, Premium) / Isolated (IsolatedV2)
 - Auto-scaling for Azure web apps can only be configured for web apps that are part of the Standard App Service Plan or higher.
+- - Azure App Service cannot be directly moved to a different region.
+- Pricing tiers
+- 1. Shared compute (free and shared)  / cannot scale out
+  2. Dedictaed (basic, standard, premium v2,v3) share the compute resource
+  3. Isolated / uns on dedicated VN and provide compute and NW isolation. provide fill scale out features
+- You can move an app to another App Service plan, as long as the source plan and the target plan are in the same resource group and geographical region and of the same OS type
+- you can scale out an App Service Plan while the apps are online in Azure App Service. Scaling out increases the number of instances running your app without downtime
+- scale up ( add more resources) / scale out ( add more instances)
+- Revisit app service plan backups
   
 - **Cost of App Service plans**
 - Shared tier: Each app receives a quota of CPU minutes, so each app is charged for the CPU quota.
@@ -262,7 +327,7 @@ Also we can deploy container based app using Azure web apps
 
 ## Note
 - Resource group is a logical grouping. Since changing it doesnot change any thing.
-- Resource group is locagical groups doesn't cost
+- Resource group is logical groups doesn't cost
 - To resize one of the VMs in availability set all should have to stop
 -  Add-AzVhd cmdlet uploads an on-premise virtual hard disk to a managed disk or a blob storage account.
 -  The Linux diagnostic extension helps a user monitor the health of a Linux VM running on Microsoft Azure
@@ -273,3 +338,4 @@ Also we can deploy container based app using Azure web apps
 - Azure Virtual Machine Scale Sets do not support different VM sizes and configurations within the same scale set
 - ACR Webhooks allow automated deployment updates by triggering an action when a new approved image is pushed to the Azure Container Registry (ACR).
 - Converting unmanaged disks to managed disks allows you to take advantage of Azure's built-in encryption capabilities and management features, which can help enhance the security of data at rest within your virtual machines.
+- .NET 8 LTS is supported on both Windows and Linux platforms (ASP.NET 4.8 runtime stack is only windows)
