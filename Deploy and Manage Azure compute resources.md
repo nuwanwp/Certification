@@ -50,6 +50,7 @@ Install nginx
 
 Shutdown VM itself not deallocating, some cost is calculating. Whole VM deallocating when perform shutdown form Portal
 No computation cost, only cost for disk and IP, Data in the temporary disk isn't persisted. E and D series only
+VM cannot be moved seprate region once created since disk, public IP and NSG are regional resources
 
 ## CPU Size
 - General purpose  A,B,D (A - Entry-level economical,B -  Burstable, D - Enterprise-grade applications, Relational databases, In-memory caching, Data analytics)
@@ -60,16 +61,37 @@ No computation cost, only cost for disk and IP, Data in the temporary disk isn't
 - FPGA accelerated NP (machine learning)
 - High performance computer (HB/ HC)( Weather modeling, Computational chemistry)
 
-- You can't change a virtual machine's generation after you've created it
-- If the virtual machine is currently running, changing its size will cause it to restart.
-- You can't resize a VM size that has a local temp disk to a VM size with no local temp disk and vice versa
+- You can't change a virtual machine's generation after you've created it( size changing the family requires diffrent underlying HW) 
+- If the virtual machine is currently running, changing its size will cause it to restart. It is a distrucptive procedure.
+- You can't resize a VM size that has a local temp disk (D: drive) to a VM size with no local temp disk and vice versa
 - NVM Express (NVMe) is a communication protocol that facilitates faster and more efficient data transfer between servers and storage systems 
 - Generation 2 VMs use the new UEFI-based boot architecture rather than the BIOS-based architecture but no price difference.
 - Azure Compute offers virtual machine sizes that are Isolated to a specific hardware type and dedicated to a single customer. The Isolated sizes live and operate on specific hardware generation and will be deprecated when the hardware generation is retired
+- Isolated virtual machine sizes are best suited for workloads that require a high degree of isolation from other customers’ workloads
 
-## Azure Comoute Gallery
+## VM billing
+![image](https://github.com/user-attachments/assets/1c74ca10-a3ca-4eb1-9e1a-ef12c16afd88)
+- If VM shutdwon it seld it is billing
+- Stop using portal is is deallocating - no bill
+
+## Azure Compute Gallery
 - Helps you build structure and organization around your Azure resources, like images and applications
 - revisit Instances section
+- we can create image and uploaded to compute gallery can recreate on another region. but disk is region serverice disk is stay in sam region. We can move disk by takinf snaphost or Azure site recovery. Snapshot takin a read only copy from disk and create new disk in new region.
+- You can also create an App registration to share images between tenants.
+- RBAC sharing / RBAC + Direct shared gallry / RBAC + Community gallery
+- Limitations in communiity gallery
+- 1. cannot convert privilage galley as community gallery
+  2. 3rd party images cannot publish as comminuty images
+  3. Eneryoted images are not supported
+  4. Not available for gov clods
+  5. mage resources need to be created in the same region as the gallery
+  6. MS not support htem. has to deal with publisher
+- Azure Shared Image Gallery (now known as Azure Compute Gallery) allows you to replicate custom images across multiple Azure regions for high availability and disaster recovery
+- Shared Image Gallery cannot be used with VM Scale Sets.
+- you can't move the gallery image resource to a different subscription. You can replicate the image versions in the gallery to other regions or copy an image from another gallery
+- VM applications - VM Applications are a resource type in Azure Compute Gallery (formerly known as Shared Image Gallery) that simplifies management, sharing, and global distribution of applications for your virtual machines
+  
 
 ## Disk
  - Managed disk porvides ZRS and LRS redundancy options
@@ -79,30 +101,34 @@ No computation cost, only cost for disk and IP, Data in the temporary disk isn't
 - Disk types
 - ![image](https://github.com/user-attachments/assets/5f4a8028-84f7-4a16-9aa1-604653bf4fd8)
   
-- Ultra Disks also feature a flexible performance configuration model that allows you to independently configure IOPS and throughput / Ultra Disks can't be used as an OS disk. / doesnot support  Compute Gallery.
-- Premium SSD v2 - transaction-intensive database may need a large amount of IOPS / gaming application may need a large amount of IOPS / can't be used as an OS disk. / doesnot support  Compute Gallery
-- Premium SSDs - suitable for mission-critical production applications/ offer disk bursting
+- Ultra Disks also feature a flexible performance configuration model that allows you to independently configure IOPS and throughput / Ultra Disks can't be used as an OS disk. / doesnot support  Compute Gallery. Can be attached to VM without downtime, Ultra Disks don't support availability sets. /Encrypting Ultra Disks with customer-managed keys using Azure Key Vaults stored in a different Microsoft Entra ID tenant isn't currently supported. /Azure Site Recovery isn't supported for VMs with Ultra Disks.
+  
+- Premium SSD v2 - transaction-intensive database may need a large amount of IOPS / gaming application may need a large amount of IOPS / can't be used as an OS disk. / doesnot support  Compute Gallery / Encrypting Ultra Disks with customer-managed keys using Azure Key Vaults stored in a different Microsoft Entra ID tenant isn't currently supported. /Azure Site Recovery isn't supported for VMs with Premium SSD v2 disks.
+  
+- Premium SSDs - suitable for mission-critical production applications/ offer disk bursting 
 - Standard SSDs -  suitable for web servers, low IOPS application servers, lightly used enterprise applications, and non-production workloads / offer disk bursting
 - Standard HDDs - disks for dev/test scenarios and less critical workloads
   
-- Manage disk has two redundancy options (LRD and ZRS)
+- Manage disk has two redundancy options (LRS and ZRS)/ ZRS for managed disks is only supported with Premium SSD and Standard SSD managed disks
 - ZRS replicates your Azure managed disk synchronously across three Azure availability zones in the selected region
 - There are several types of encryption available for your managed disks, including **Azure Disk Encryption** (ADE), **Server-Side Encryption** (SSE), and **encryption at host**.
 - Upgrade a disk type directly from Standard HDD to Premium SSD via the Azure Portal or Azure CLI, without detaching the disk.
-  
+
+- Shared Disk
+- 1. Currently, only Ultra Disks, Premium SSD v2, Premium SSD, and Standard SSDs can be used as a shared disk
 
 - VM temporary storage goes away when restarting. Only data disk and OS disk remains.
 - VMs contain a temporary disk, which isn't a managed disk. The temporary disk provides short-term storage for applications and processes. It's intended for storing only data such as page files, swap files
 
-## Snapshots
-- Create snaphost (az resource) and create disk from the snapshot and attach to the VM
-- Disk snapshot can be created from Disk Snaphot serive and create back disk and attached to VM
-- Snapshots are billed based on the used size. Not for full disk size
-- Managed disks support creating managed custom images.
-- Images versus snapshots (A snapshot is a copy of a disk at a point in time. It applies only to one disk. If you have a VM that has one disk (the OS disk), you can take a snapshot or an image of it and create a VM from either the snapshot or the image)
-
-- Managed disk size: Managed disks are billed according to their provisioned size
-- Snapshots are billed based on the size used
+## VM images
+- Image definition contains meta data and version info
+- Two types specialized VM images and Generic Images.
+- Generalized and specialized VM images contain an operating system disk and all the attached disks, if there any.
+- Specialized VM images contain all computer names and admin user info.
+- Generic VM images do not contain those. After it creates original VM will not be usable.
+- Gen1 and Gen 2 images. Gen1 VM cannot create Gen2 images
+- Once you generalize a VM in Azure, you cannot restart it because the VM is permanently marked as a generalized image.
+- Managed images can be used to create multiple VMs, but they have many limitations. Managed images can only be created from a generalized source (VM or VHD). They can only be used to create VMs in the same region and they can't be shared across subscriptions and tenants.
 
 
 ## Disk Encryption (no extra cost)
@@ -111,7 +137,8 @@ No computation cost, only cost for disk and IP, Data in the temporary disk isn't
   2. Encryption at host - Virtual Machine option that enhances Azure Disk Storage Server-Side Encryption to ensure that all temp disks and disk caches are encrypted at rest and
   3. Azure Disk Encryption - ADE encrypts the OS and data disks of Azure virtual machines (VMs) inside your VMs (bit locker)
   4. Confidential disk encryption - binds disk encryption keys to the virtual machine's TPM and makes the protected disk content accessible only to the VM
-     
+
+- Temporary disks are not managed disks and are not encrypted by SSE, unless you enable encryption at host.
 - Azure Disk Storage Server-Side Encryption (PMK and Custom Managed Keys through the Key Vault) encryption-at-rest - AES-256
 - Azure Disk Encryption helps protect and safeguard your data to meet your organizational security and compliance commitments. Ex:- Bit Locker
 - Encryption at host is a Virtual Machine option that enhances Azure Disk Storage Server-Side Encryption to ensure that all temp disks and disk caches are encrypted at rest
@@ -137,6 +164,16 @@ No computation cost, only cost for disk and IP, Data in the temporary disk isn't
 4. Change the encryptio setting to use encryption set
    
 
+## Snapshots
+- Create snaphost (az resource) and create disk from the snapshot and attach to the VM
+- Disk snapshot can be created from Disk Snaphot serive and create back disk and attached to VM
+- Snapshots are billed based on the used size. Not for full disk size
+- Managed disks support creating managed custom images.
+- Images versus snapshots (A snapshot is a copy of a disk at a point in time. It applies only to one disk. If you have a VM that has one disk (the OS disk), you can take a snapshot or an image of it and create a VM from either the snapshot or the image)
+
+- Managed disk size: Managed disks are billed according to their provisioned size
+- Snapshots are billed based on the size used
+  
 ## Troubleshooting
 - Reset your RDP connection
 - Verify Network Security Group rules
@@ -145,9 +182,6 @@ No computation cost, only cost for disk and IP, Data in the temporary disk isn't
 - Check VM Resource Health
 - Reset user credentials
 - Verify routing
-  
-## Azure compute galley
-- gallery, you can share your resources to everyone. disk snapshots
   
 ## Custom script extenstion
 - Reposible for preparing initial software installation and preparing works
@@ -165,7 +199,15 @@ To run scripts, installings etc.
 - Redeploy the VM, virtual machine will be restarted and you will lose any data on the temporary drive.
 - Reaplly -  Reapplying your virtual machine's state
 
+## Availablity options for VMs
+- 1. Availability zones
+  2. Virtual Machines Scale Sets
+  3. Availability sets
+  4. Load balancer
+  5. Azure Site Recovery
+
 ## Availability Set
+- limited to a single Azure region and a single datacenter within that region.
 - Fault domains are used to define the group of virtual machines that share a common source and network switch. You can have up to 3 fault domains.
 - Update domains are used to group virtual machines and physical hardware that can be rebooted at the same time. You can have up to 20 update domains.
 
@@ -215,7 +257,21 @@ To run scripts, installings etc.
 -Apply custom script extensions at scale sets.
 	-Update option for updating the vms (Latest Model)
 
--The VM must be in the same resource group as the scale set.
+- Attaching new VM to scale set
+- 1. The VM must be in the same resource group as the scale set.
+  2. Regional virtual machines (no availability zones specified) can be attached to regional scale sets.
+  3. Zonal virtual machines can be attached to scale sets that specify one or more zone
+  4. The scale set must be in Flexible orchestration mode
+
+- Attach an existing Virtual Machine to a Virtual Machine Scale Set
+- 1. Attaching an existing VM to a scale set with a fault domain count of 1 doesn't require downtime.
+  2. The scale set must use Flexible orchestration mode.
+  3. The scale set must have a platformFaultDomainCount of 1.
+  4. The VM can't be in a ProximityPlacementGroup.
+  5. The VM can't be in an Azure Dedicated Host.
+  6. The VM must have a managed disk.
+  7. The VM and scale set must be in the same resource group. The VM and target scale set must both be zonal, or they must both be regional. You can't attach a zonal VM to a regional scale set.
+
 
 -Limitations for attaching an existing Virtual Machine to a scale set
 	-The scale set must use Flexible orchestration mode.
@@ -235,13 +291,6 @@ To run scripts, installings etc.
 ## Azure Site Recovery
 - Site Recovery replicates workloads running on physical and virtual machines (VMs) from a primary site to a secondary location. When an outage occurs at your primary site, you fail over to secondary location
   
-## VM images
-- Image definition contains meta data and version info
-- Two types specialized VM images and Generic Images.
-- Specialized VM images contain all computer names and admin user info.
-- Generic VM images do not contain those. After it creates original VM will not be usable.
-- Gen1 and Gen 2 images. Gen1 VM cannot create Gen2 images
-- Once you generalize a VM in Azure, you cannot restart it because the VM is permanently marked as a generalized image.
 
 ## Proximity Groups
 - Separate azure resource proximity group and new vms to the proximity group
