@@ -141,6 +141,7 @@ Recall each endpoint UNC path for each type
 - The storage account was deleted within the past 14 days.
 - Should be created using ARM deployment model
 - A new storage account with the same name has not been created
+- When a storage account is deleted, any linked private endpoints are also removed. These private endpoints are not automatically recreated when the storage account is recovered.
 
 ## Storage account Locks
 
@@ -149,6 +150,8 @@ Recall each endpoint UNC path for each type
 - When having delete lock it is not possible to delete the storage account as well.
 
 NOTE :- Data in Azure Files or the Table service may become unaccessible to clients who have previously been accessing it with the account keys. As a best practice, if you must apply a ReadOnly lock to a storage account, then move your Azure Files and Table service workloads to a storage account that is not locked with a ReadOnly lock.
+
+- Locking a storage account does not protect containers or blobs within that account from being deleted or overwritten
 
 ## Storage data movement
 
@@ -162,7 +165,7 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 ## Lifecycle management policies
 
 - Lifecycle management policies are supported for block blobs and append blobs in general-purpose v2, premium block blob, and Blob Storage accounts. Lifecycle management doesn't affect system containers such as the $logs or $web containers.
-- No tier is premium on delete action
+- No tier is premium only delete action is available
 - Account level action
 - Rule
   ```
