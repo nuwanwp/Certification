@@ -91,10 +91,9 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 - Limitations in communiity gallery
 - 1. cannot convert privilage galley as community gallery
   2. 3rd party images cannot publish as comminuty images
-  3. Eneryoted images are not supported
+  3. Encrypted images are not supported
   4. Not available for gov clods
-  5. mage resources need to be created in the same region as the gallery
-  6. MS not support htem. has to deal with publisher
+  5. Image resources need to be created in the same region as the gallery
 - Azure Shared Image Gallery (now known as Azure Compute Gallery) allows you to replicate custom images across multiple Azure regions for high availability and disaster recovery
 - Shared Image Gallery cannot be used with VM Scale Sets.
 - you can't move the gallery image resource to a different subscription. You can replicate the image versions in the gallery to other regions or copy an image from another gallery
@@ -118,10 +117,11 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 - Standard SSDs -  suitable for web servers, low IOPS application servers, lightly used enterprise applications, and non-production workloads / offer disk bursting
 - Standard HDDs - disks for dev/test scenarios and less critical workloads
   
-- Manage disk has two redundancy options (LRS and ZRS)/ ZRS for managed disks is only supported with Premium SSD and Standard SSD managed disks
+- Manage disk has two redundancy options (LRS and ZRS)/ ZRS for managed disks is only supported with Premium SSD and Standard SSD managed disks. Premium SSD v2 is not supported
 - ZRS replicates your Azure managed disk synchronously across three Azure availability zones in the selected region
 - There are several types of encryption available for your managed disks, including **Azure Disk Encryption** (ADE), **Server-Side Encryption** (SSE), and **encryption at host**.
 - Upgrade a disk type directly from Standard HDD to Premium SSD via the Azure Portal or Azure CLI, without detaching the disk.
+- Disk size cannot reduce
 
 - Shared Disk
 - 1. Currently, only Ultra Disks, Premium SSD v2, Premium SSD, and Standard SSDs can be used as a shared disk
@@ -146,10 +146,10 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 
 ## Disk Encryption (no extra cost)
 - Type of encryptions
-- 1. Azure Disk Storage Server-Side Encryption (support PMK and Custom amanged keys)/ no encrypt temp disk
+- 1. Azure Disk Storage Server-Side Encryption (support PMK and Custom amanged keys)/ OS and data disk/ no encrypt temp disk
   2. Encryption at host - Virtual Machine option that enhances Azure Disk Storage Server-Side Encryption to ensure that all temp disks and disk caches are encrypted at rest and
   3. Azure Disk Encryption - ADE encrypts the OS and data disks of Azure virtual machines (VMs) inside your VMs (bit locker)
-  4. Confidential disk encryption - binds disk encryption keys to the virtual machine's TPM and makes the protected disk content accessible only to the VM
+  4. Confidential disk encryption - binds disk encryption keys to the virtual machine's TPM and makes the protected disk content accessible only to the VM. Only os disk
 
 - Temporary disks are not managed disks and are not encrypted by SSE, unless you enable encryption at host.
 - Azure Disk Storage Server-Side Encryption (PMK and Custom Managed Keys through the Key Vault) encryption-at-rest - AES-256
@@ -157,6 +157,7 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 - Encryption at host is a Virtual Machine option that enhances Azure Disk Storage Server-Side Encryption to ensure that all temp disks and disk caches are encrypted at rest
 - Virtual Machines aren't rebooted during automatic key rotation.
 - When a key is either disabled, deleted, or expired, any VMs with either OS or data disks using that key will automatically shut down.
+- Soft delete and Purge protection is required for using a Key Vault for encrypting managed disks.
   
 - **Restriction on custom managed keys**
 - Disks encrypted with customer-managed keys can only move to another resource group if the VM they are attached to is deallocated.  
@@ -234,15 +235,16 @@ To run scripts, installings etc.
 ## Availability Zones
 - Separated groups of datacenters within a region. NO cost (only the data transfer has cost or no).
 - Each Availability zone is a unique physical location in an Azure region. 99.99% availability.
-- 
+
 - VM or scale set can be deployed as **Zonal** (VM resources are deployed to a specific, self-selected availability zone to achieve more stringent latency or performance requirements.)
 - or **Zone redundant** (VM resources are replicated to one or more zones within the region to improve the resiliency of the application and data in a High Availability)
 
 - if a Virtual Machine (VM) is deployed in a ZRS (Zone-Redundant Storage) Availability Set, its disk must also be ZRS-enabled to ensure the same level of redundancy.
-- Both availability sets abd av zone does not replicate the app. Both giving iaas service.
+- Both availability sets and av zone does not replicate the app. Both giving iaas service.
 
 ## Scale sets
 - Same as other 2 data/app is not replicating
+- The orchestration mode is defined when you create the scale set and cannot be changed or updated later.
 - No additional cost for using scale sets. You are charged based on the compute, network, and storage resources that the scale set uses.
 - Scale is another azure resource and VM are attached to that.
 - Manual scaling and Auto scaling with rules
@@ -285,7 +287,6 @@ To run scripts, installings etc.
   6. The VM must have a managed disk.
   7. The VM and scale set must be in the same resource group. The VM and target scale set must both be zonal, or they must both be regional. You can't attach a zonal VM to a regional scale set.
 
-
 -Limitations for attaching an existing Virtual Machine to a scale set
 	-The scale set must use Flexible orchestration mode.
 	-The VM and scale set must be in the same resource group.
@@ -304,12 +305,17 @@ To run scripts, installings etc.
 ## Azure Site Recovery
 - Site Recovery replicates workloads running on physical and virtual machines (VMs) from a primary site to a secondary location. When an outage occurs at your primary site, you fail over to secondary location
   
-
 ## Proximity Groups
 - Defining the VM size in a Proximity Placement Group is necessary for proper resource allocation, performance optimization, and effective scaling
 - Sometime application required VM to be closer to reduce the latency. By placing them part of proximity group they will physically located close each other.
 - Proximity group assigned to data center when creating the first vm inside it and removed with the last vm.
 - When moving a resource into a proximity placement group, you should stop (deallocate) the asset first since it will be redeployed potentially into a different data center.
+- VM, scale set or availability set should be in same region as the proximity group.
+- Proximity group cannot assign when spreading across multiple AV zones. Onlt one AV zone is supported.
+-  alignment status ( aligned, unknown, not aligned)
+-  intent parameter - By selecting one or more sizes that you intend to deploy to this proximity placement group, you can make virtual machine and virtual machine scale set deployments more likely to succeed.
+-  recall the setps of Adding VMs in an availability set to a proximity placement group
+-  recall the setps of Adding existing VM to placement group
 
 ## Azure web app service (paas)
 - Fully managed service in App Service.
