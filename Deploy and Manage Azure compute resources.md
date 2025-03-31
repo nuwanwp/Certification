@@ -64,6 +64,7 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 - You can't change a virtual machine's generation after you've created it( size changing the family requires diffrent underlying HW) 
 - If the virtual machine is currently running, changing its size will cause it to restart. It is a distrucptive procedure.
 - You can't resize a VM size that has a local temp disk (D: drive) to a VM size with no local temp disk and vice versa
+- You can't resize a VM size that has a SCSI-based VM to a VM size that has a remote NVMe-enabled VM
 - NVM Express (NVMe) is a communication protocol that facilitates faster and more efficient data transfer between servers and storage systems 
 - Generation 2 VMs use the new UEFI-based boot architecture rather than the BIOS-based architecture but no price difference.
 - Azure Compute offers virtual machine sizes that are Isolated to a specific hardware type and dedicated to a single customer. The Isolated sizes live and operate on specific hardware generation and will be deprecated when the hardware generation is retired
@@ -73,8 +74,15 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 ![image](https://github.com/user-attachments/assets/1c74ca10-a3ca-4eb1-9e1a-ef12c16afd88)
 - If VM shutdwon it seld it is billing
 - Stop using portal is is deallocating - no bill
+1. Creating
+2. Starting
+3. Running
+4. Stopping
+5. Stopped
+6. Deallocating
+7. Deallocated
 
-## Azure Compute Gallery
+## Azure Compute Gallery (ZRS offers)
 - Helps you build structure and organization around your Azure resources, like images and applications
 - revisit Instances section
 - we can create image and uploaded to compute gallery can recreate on another region. but disk is region serverice disk is stay in sam region. We can move disk by takinf snaphost or Azure site recovery. Snapshot takin a read only copy from disk and create new disk in new region.
@@ -91,6 +99,7 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 - Shared Image Gallery cannot be used with VM Scale Sets.
 - you can't move the gallery image resource to a different subscription. You can replicate the image versions in the gallery to other regions or copy an image from another gallery
 - VM applications - VM Applications are a resource type in Azure Compute Gallery (formerly known as Shared Image Gallery) that simplifies management, sharing, and global distribution of applications for your virtual machines
+- Compute Gallery Sharing Admin role at the subscription or gallery level will be able to enable group-based sharing
   
 
 ## Disk
@@ -103,7 +112,7 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
   
 - Ultra Disks also feature a flexible performance configuration model that allows you to independently configure IOPS and throughput / Ultra Disks can't be used as an OS disk. / doesnot support  Compute Gallery. Can be attached to VM without downtime, Ultra Disks don't support availability sets. /Encrypting Ultra Disks with customer-managed keys using Azure Key Vaults stored in a different Microsoft Entra ID tenant isn't currently supported. /Azure Site Recovery isn't supported for VMs with Ultra Disks.
   
-- Premium SSD v2 - transaction-intensive database may need a large amount of IOPS / gaming application may need a large amount of IOPS / can't be used as an OS disk. / doesnot support  Compute Gallery / Encrypting Ultra Disks with customer-managed keys using Azure Key Vaults stored in a different Microsoft Entra ID tenant isn't currently supported. /Azure Site Recovery isn't supported for VMs with Premium SSD v2 disks.
+- Premium SSD v2 - transaction-intensive database may need a large amount of IOPS / gaming application may need a large amount of IOPS / can't be used as an OS disk. / doesnot support  Compute Gallery / Encrypting Ultra Disks with customer-managed keys using Azure Key Vaults stored in a different Microsoft Entra ID tenant isn't currently supported. /Azure Site Recovery isn't supported for VMs with Premium SSD v2 disks / Premium SSD v2 disks can't be attached to VMs in Availability Sets
   
 - Premium SSDs - suitable for mission-critical production applications/ offer disk bursting 
 - Standard SSDs -  suitable for web servers, low IOPS application servers, lightly used enterprise applications, and non-production workloads / offer disk bursting
@@ -129,6 +138,10 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 - Gen1 and Gen 2 images. Gen1 VM cannot create Gen2 images
 - Once you generalize a VM in Azure, you cannot restart it because the VM is permanently marked as a generalized image.
 - Managed images can be used to create multiple VMs, but they have many limitations. Managed images can only be created from a generalized source (VM or VHD). They can only be used to create VMs in the same region and they can't be shared across subscriptions and tenants.
+
+## Best practices for achieving high availability with Azure virtual machines
+- 1. Applications running on a single VM - Single VMs using only Premium SSD disks as the OS disks, and either Ultra Disks, Premium SSD v2, or Premium SSD disks as data disks have the highest uptime service level agreement (SLA), and these disk types offer the best performance. and enable ZRS disks
+- 2.Applications running on multiple VMs - use scal sets with availability zones, flexible orchestration mode or by deploying VMs and disks across three availability zones. Deploy VMs and disks across multiple fault domains
 
 
 ## Disk Encryption (no extra cost)
@@ -186,7 +199,7 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 ## Custom script extenstion
 - Reposible for preparing initial software installation and preparing works
 - 90 minutes to run
-- Cloud Init
+- Cloud Init for linux
 - Custom extentions can be added to scale sets as well
 
 ## Boot diagnostics
@@ -293,7 +306,6 @@ To run scripts, installings etc.
   
 
 ## Proximity Groups
-- Separate azure resource proximity group and new vms to the proximity group
 - Defining the VM size in a Proximity Placement Group is necessary for proper resource allocation, performance optimization, and effective scaling
 - Sometime application required VM to be closer to reduce the latency. By placing them part of proximity group they will physically located close each other.
 - Proximity group assigned to data center when creating the first vm inside it and removed with the last vm.
