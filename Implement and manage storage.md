@@ -21,15 +21,21 @@
   - account name, blob names are case sentive
 
 ## Architecture
-- 1. Reliability
+ 1. Reliability
   - ZRS and GZRS give max availability and durability as redundency options
-- 2. Security
-- 3. Cost Optimization
-- 4. Azure policies
-- 5. Azure Advisor (Reliability,Security,Cost Optimization,Performance,Operational Excellence). Cannot create alerts from advisor
+ 2. Security
+ 3. Cost Optimization
+ 4. Azure policies
+ 5. Azure Advisor (Reliability,Security,Cost Optimization,Performance,Operational Excellence). Cannot create alerts from advisor
+ 
+## Storage explorer
+- Connect to storage account
+- Can create containers and blobs
+- Can create SAS on account level, container level and blob level
+- Create and manage snapshots
+- Storage Explorer does not currently support creating a user delegation SAS
 
 ## Quickstart
-
 - 1. Storage explorer (create container/ upload-download blobs/ generate SAS / User delegated SAS not supported
   2. Powershell
 
@@ -98,8 +104,7 @@
   ```
 
 ## Storage account overview
-
-- 1. Standard general-purpose v2 - LRS, GRS, ZRS, GZRS, RA-GRS, RA-GZRS
+  1. Standard general-purpose v2 - LRS, GRS, ZRS, GZRS, RA-GRS, RA-GZRS
   2. Premium block blobs - LRS/ZRS high transaction rates or that use smaller objects or require consistently low storage latency
   3. Premium fileshares - enterprise or high-performance scale applications
   4. premium page blobs - video editing applications, Azure Disks
@@ -243,8 +248,8 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - SAS can be created on blob level and container levels
 - all permissions are embeded to the url
 - 3 types of SAS
-- 1.   service SAS provides access to a resource in just one of the storage services: the Blob, Queue, Table, or File service
-  2.  account SAS is similar to a service SAS, but can permit access to resources in more than one storage service.
+- 1.  service SAS provides access to a resource in just one of the storage services: the Blob, Queue, Table, or File service. Created when creating SAS for container level
+  2.  account SAS is similar to a service SAS, but can permit access to resources in more than one storage service. Created when creating SAS for account level
   3.  user delegation SAS is a SAS secured with Microsoft Entra credentials and can only be used with Blob Storage service.
 
 ## Stored Access Policy
