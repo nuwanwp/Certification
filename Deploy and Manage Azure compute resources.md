@@ -99,7 +99,6 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 - you can't move the gallery image resource to a different subscription. You can replicate the image versions in the gallery to other regions or copy an image from another gallery
 - VM applications - VM Applications are a resource type in Azure Compute Gallery (formerly known as Shared Image Gallery) that simplifies management, sharing, and global distribution of applications for your virtual machines
 - Compute Gallery Sharing Admin role at the subscription or gallery level will be able to enable group-based sharing
-  
 
 ## Disk
  - Managed disk porvides ZRS and LRS redundancy options
@@ -109,13 +108,13 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 - Disk types
 - ![image](https://github.com/user-attachments/assets/5f4a8028-84f7-4a16-9aa1-604653bf4fd8)
   
-- Ultra Disks also feature a flexible performance configuration model that allows you to independently configure IOPS and throughput / Ultra Disks can't be used as an OS disk. / doesnot support  Compute Gallery. Can be attached to VM without downtime, Ultra Disks don't support availability sets. /Encrypting Ultra Disks with customer-managed keys using Azure Key Vaults stored in a different Microsoft Entra ID tenant isn't currently supported. /Azure Site Recovery isn't supported for VMs with Ultra Disks.
+- **Ultra Disks** also feature a flexible performance configuration model that allows you to independently configure IOPS and throughput / Ultra Disks can't be used as an OS disk. / doesnot support  Compute Gallery. Can be attached to VM without downtime, Ultra Disks don't support availability sets. /Encrypting Ultra Disks with customer-managed keys using Azure Key Vaults stored in a different Microsoft Entra ID tenant isn't currently supported. /Azure Site Recovery isn't supported for VMs with Ultra Disks. / Ultra Disks only support Single VM and Availability zone infrastructure options / Ultra Disks don't support disk caching.
   
-- Premium SSD v2 - transaction-intensive database may need a large amount of IOPS / gaming application may need a large amount of IOPS / can't be used as an OS disk. / doesnot support  Compute Gallery / Encrypting Ultra Disks with customer-managed keys using Azure Key Vaults stored in a different Microsoft Entra ID tenant isn't currently supported. /Azure Site Recovery isn't supported for VMs with Premium SSD v2 disks / Premium SSD v2 disks can't be attached to VMs in Availability Sets
+- **Premium SSD v2** - transaction-intensive database may need a large amount of IOPS / gaming application may need a large amount of IOPS / can't be used as an OS disk. / doesnot support  Compute Gallery / Encrypting Ultra Disks with customer-managed keys using Azure Key Vaults stored in a different Microsoft Entra ID tenant isn't currently supported. /Azure Site Recovery isn't supported for VMs with Premium SSD v2 disks / Premium SSD v2 disks can't be attached to VMs in Availability Sets/  Premium SSDv2 doesn't support host caching. / If you want to use a Premium SSD v2 disk, you must attach it to a VM that is explicitly deployed in a specific availability zone (e.g., Zone 1, Zone 2, or Zone 3)./ You cannot attach a Premium SSD v2 disk to a VM that is not assigned to a specific zone or one that is using a regional deployment model.
   
-- Premium SSDs - suitable for mission-critical production applications/ offer disk bursting 
-- Standard SSDs -  suitable for web servers, low IOPS application servers, lightly used enterprise applications, and non-production workloads / offer disk bursting
-- Standard HDDs - disks for dev/test scenarios and less critical workloads
+- **Premium SSDs** - suitable for mission-critical production applications/ offer disk bursting 
+- **Standard SSDs** -  suitable for web servers, low IOPS application servers, lightly used enterprise applications, and non-production workloads / offer disk bursting
+- **Standard HDDs** - disks for dev/test scenarios and less critical workloads
   
 - Manage disk has two redundancy options (LRS and ZRS)/ ZRS for managed disks is only supported with Premium SSD and Standard SSD managed disks. Premium SSD v2 is not supported
 - ZRS replicates your Azure managed disk synchronously across three Azure availability zones in the selected region
@@ -129,20 +128,8 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 - VM temporary storage goes away when restarting. Only data disk and OS disk remains.
 - VMs contain a temporary disk, which isn't a managed disk. The temporary disk provides short-term storage for applications and processes. It's intended for storing only data such as page files, swap files
 
-## VM images
-- Image definition contains meta data and version info
-- Two types specialized VM images and Generic Images.
-- Generalized and specialized VM images contain an operating system disk and all the attached disks, if there any.
-- Specialized VM images contain all computer names and admin user info.
-- Generic VM images do not contain those. After it creates original VM will not be usable.
-- Gen1 and Gen 2 images. Gen1 VM cannot create Gen2 images
-- Once you generalize a VM in Azure, you cannot restart it because the VM is permanently marked as a generalized image.
-- Managed images can be used to create multiple VMs, but they have many limitations. Managed images can only be created from a generalized source (VM or VHD). They can only be used to create VMs in the same region and they can't be shared across subscriptions and tenants.
-
-## Best practices for achieving high availability with Azure virtual machines
-- 1. Applications running on a single VM - Single VMs using only Premium SSD disks as the OS disks, and either Ultra Disks, Premium SSD v2, or Premium SSD disks as data disks have the highest uptime service level agreement (SLA), and these disk types offer the best performance. and enable ZRS disks
-- 2.Applications running on multiple VMs - use scal sets with availability zones, flexible orchestration mode or by deploying VMs and disks across three availability zones. Deploy VMs and disks across multiple fault domains
-
+## Disk private link
+- support for managed disks to import or export a managed disk that's internal to your network. With Private Link, you can generate a time-bound SAS URI for unattached managed disks and snapshots. You can then use that SAS URI to export the data to other regions for regional expansion, disaster recovery, and forensic analysis. You can also use the SAS URI to directly upload a VHD to an empty disk from on-premises
 
 ## Disk Encryption (no extra cost)
 - Type of encryptions
@@ -175,8 +162,24 @@ VM cannot be moved seprate region once created since disk, public IP and NSG are
 1. Key Vault Adminitrator role
 2. Create Disk encryption Set (azResource)
 3. De attached disk from running vm
-4. Change the encryptio setting to use encryption set
-   
+4. Change the encryption setting to use encryption set
+
+## VM images
+- Image definition contains meta data and version info
+- Two types specialized VM images and Generic Images.
+- Generalized and specialized VM images contain an operating system disk and all the attached disks, if there any.
+- Specialized VM images contain all computer names and admin user info.
+- Generic VM images do not contain those. After it creates original VM will not be usable.
+- Gen1 and Gen 2 images. Gen1 VM cannot create Gen2 images
+- Once you generalize a VM in Azure, you cannot restart it because the VM is permanently marked as a generalized image.
+- Managed images can be used to create multiple VMs, but they have many limitations. Managed images can only be created from a generalized source (VM or VHD). They can only be used to create VMs in the same region and they can't be shared across subscriptions and tenants.
+
+## Best practices for achieving high availability with Azure virtual machines
+- 1. Applications running on a single VM - Single VMs using only Premium SSD disks as the OS disks, and either Ultra Disks, Premium SSD v2, or Premium SSD disks as data disks have the highest uptime service level agreement (SLA), and these disk types offer the best performance. and enable ZRS disks
+- 2.Applications running on multiple VMs - use scal sets with availability zones, flexible orchestration mode or by deploying VMs and disks across three availability zones. Deploy VMs and disks across multiple fault domains
+
+## DDOS protection
+- You cannot move a virtual network to another resource group or subscription when DDoS Protection is enabled for the virtual network. If you need to move a virtual network with DDoS Protection enabled, disable DDoS Protection first, move the virtual network, and then enable DDoS Protection
 
 ## Snapshots
 - Create snaphost (az resource) and create disk from the snapshot and attach to the VM
@@ -325,17 +328,20 @@ To run scripts, installings etc.
 - Recall the usage of this
 
 ## APP service plan
-- An Azure App Service plan defines a set of compute resources for a web app to run
+- An Azure App Service plan defines a set of compute resources for a web app to run (OS, region, No VMs, Size of VM, pricing tier)
 - Auto-scaling for Azure web apps can only be configured for web apps that are part of the Standard App Service Plan or higher.
 - - Azure App Service cannot be directly moved to a different region.
 - Pricing tiers
 - 1. Shared compute (free and shared)  / cannot scale out
   2. Dedictaed (basic, standard, premium v2,v3) share the compute resource
-  3. Isolated / uns on dedicated VN and provide compute and NW isolation. provide fill scale out features
+  3. Isolated / on dedicated VN and provide compute and NW isolation. provide fill scale out features
 - You can move an app to another App Service plan, as long as the source plan and the target plan are in the same resource group and geographical region and of the same OS type
 - you can scale out an App Service Plan while the apps are online in Azure App Service. Scaling out increases the number of instances running your app without downtime
 - scale up ( add more resources) / scale out ( add more instances)
 - Revisit app service plan backups
+- The Premium App Service plan supports up to 20 staging slots
+- Move an app to a different region - . If you want to run your app in a different region, one alternative is app cloning
+  
   
 - **Cost of App Service plans**
 - Shared tier: Each app receives a quota of CPU minutes, so each app is charged for the CPU quota.
@@ -354,6 +360,9 @@ To run scripts, installings etc.
 
 ## Azure Container Registry
 Azure Container Registry is a managed registry service based on the open-source Docker Registry 2.0. Create and maintain Azure container registries to store and manage your container images and related artifacts
+1. Basic - 	A cost-optimized entry point for developers learning about Azure Container Registry.
+2. Standard - 	Standard registries offer the same capabilities as Basic, with increased included storage and image throughput.
+3. Premium -	Premium registries provide the highest amount of included storage and concurrent operations  ( support AV zone)
 
 ## Containerization
 - Install docket on vm, Create an docket image from local linux + nginx server. Copy it to container and run
@@ -386,11 +395,20 @@ Also we can deploy container based app using Azure web apps
 ## App Service Environment
 - App Service Environment (ASE) is a fully isolated and dedicated environment for running App Service apps securely at high scale
 - Higher Performance & Isolation → Dedicated compute resources ensure low latency and high performance.
+- support Private virtual network integration 
+- Should be deployed to a seprate subnet with the VNET. Then none can deployed to this subnet
 -  Stronger Security → Fully controlled VNet integration, private IPs, and network security controls.
 -  Scalability → Can scale up to 200 instances with autoscaling.
 -  Compliance Support → Meets regulatory standards for sensitive applications (Finance, Healthcare, etc.).
 -  Advanced Networking → Supports ExpressRoute, VPN Gateway, and network security policies.
 -  Custom Domains & SSL → Enables secure access via custom domains with TLS/SSL support.
+-  default scaling unit is Worker Pools
+-  Azure AD Authentication is  natively supported by ASE
+-  Azure Monitor helps to monitor the ASE
+-  diagnose performance issues in an ASE - Use Azure Application Insights and log analytics
+-  check first if an ASE-based app is not reachable - NSG rules and VNET config
+-  Load balancing using Azure Front Door
+
 
 ## Note
 - Resource group is a logical grouping. Since changing it doesnot change any thing.
