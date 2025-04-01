@@ -135,6 +135,7 @@ Recall each endpoint UNC path for each type
 
 - Standard_LRS / Standard_GRS / Standard_RAGRS/ Standard_ZRS / Standard_GZRS / Standard_RAGZRS / Premium_LRS / Premium_ZRS
 - Upgrading a general-purpose v2 is permanent and cannot be undone.
+- You can't convert an existing standard general-purpose v2 storage account to a premium block blob storage account. migrate data is the option
 
 ## Storage account Restore
 
@@ -148,6 +149,10 @@ Recall each endpoint UNC path for each type
 - CannotDelete
 - ReadOnly - list key is post operation and all post methods are blocked. lock does not invalidate previously issued access keys. for new keys has come through the Entra ID
 - When having delete lock it is not possible to delete the storage account as well.
+- If you apply a lock to a storage account (e.g., preventing deletion or modifications), it does not immediately revoke access keys that were already issued.
+- If a client (user, application, or service) already has the storage account access keys before the lock is applied, they can continue to use those keys to access the storage account's data (Blobs, Queues, Tables, or Files).
+- This means previously authorized connections using access keys will remain valid even after the lock is placed.
+- If a client does not already have the storage account keys, they cannot obtain them after the lock is applied. Instead, they must use Microsoft Entra ID (formerly Azure AD) authentication to access Blob or Queue data.
 
 NOTE :- Data in Azure Files or the Table service may become unaccessible to clients who have previously been accessing it with the account keys. As a best practice, if you must apply a ReadOnly lock to a storage account, then move your Azure Files and Table service workloads to a storage account that is not locked with a ReadOnly lock.
 
@@ -213,6 +218,9 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - Lifecycle management policies are free of charge
 - A lifecycle management policy can't be used to change the tier of a blob that uses an encryption scope to the archive tier.
 - Premium tier have life management policy but cannot move to tiers
+- Only storage accounts that are configured for LRS, GRS, or RA-GRS support moving blobs to the archive tier. The archive tier isn't supported for ZRS, GZRS, or RA-GZRS accounts. This action gets listed based on the redundancy configured for the account.
+-  Delete operations are free.
+-  Support 100 rules and 10  prefixes
 
 ## Anonymouse access
 
@@ -234,6 +242,10 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 
 - SAS can be created on blob level and container levels
 - all permissions are embeded to the url
+- 3 types of SAS
+- 1.   service SAS provides access to a resource in just one of the storage services: the Blob, Queue, Table, or File service
+  2.  account SAS is similar to a service SAS, but can permit access to resources in more than one storage service.
+  3.  user delegation SAS is a SAS secured with Microsoft Entra credentials and can only be used with Blob Storage service.
 
 ## Stored Access Policy
 
@@ -318,6 +330,9 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - You can use encryption scopes to create secure boundaries between data that resides in the same storage account but belongs to different customers.
 - When you upload a new blob with an encryption scope, you cannot change the default access tier for that blob also cannot set to archive tier
 - Once an encryption scope is created, it is tied to data encryption, and deletion could compromise data security and cannot delete.
+- When you upload a new blob with an encryption scope, you cannot change the default access tier for that blob. You also cannot set the access tier to the archive tier for an existing blob that uses an encryption scope
+- When you disable an encryption scope, any subsequent read or write operations made with the encryption scope will fail with HTTP error code 403 (Forbidden)
+- Keep in mind that customer-managed keys are protected by soft delete and purge protection in the key vault
 
 ## Networking
 
