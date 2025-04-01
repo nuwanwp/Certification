@@ -114,16 +114,16 @@
 ## Storage account workloads
 
 ![image](https://github.com/user-attachments/assets/ccf2ee47-374c-474d-97d6-ec3cb71e8a88)
+- ZRS, RA-GRS	is enough for most cases.
 
 ## Storage account Standard endpoints
-
-Recall each endpoint UNC path for each type
+- Recall each endpoint UNC path for each type
 
 ## Storage account Migrate a storage account
 
 - 1. Move a storage account to a different subscription - ok
   2. Move a storage account to a different resource group - ok
-  3. Move a storage account to a different region - recreate
+  3. Move a storage account to a different region - recreate -azcopy to migrate data
   4. Upgrade to a general-purpose v2 storage account - ok
 
 ## Storage account billing
@@ -167,16 +167,56 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 
 - azcopy copy 'C:\myDirectory' 'https://mystorageaccount.dfs.core.windows.net/mycontainer' --include-path 'photos;documents\myFile.txt' --recursive'
 
+##  block blobs
+- Block blobs are optimized for uploading large amounts of data efficiently
+## page bloobs
+- Page blobs are a collection of 512-byte pages optimized for random read and write operations.
+## apend bloobs
+- An append blob is composed of blocks and is optimized for append operations. When you modify an append blob, blocks are added to the end of the blob 
+
 ## Container
 
 - RBAC can be assigned to storage account level and container level
 - SAS also same as container level and blob level
+
+
+
+## Anonymouse access
+
+- This can be controller from Storage account and individual container level (private/ blob/ blob and container)
+
+## Cost cutting
+
+- reduce no of rehydrations from archive tier to higher tiers
+- disabled SFTP endpoint
+- Disable unwanted encryption scopes
+- Pack small file and store them on cooler tiers
+
+## Access Keys
+
+- Giving complete access to all storage types (blob, files, queus and tables). Storage account level
+ ![image](https://github.com/user-attachments/assets/78bc835f-b585-453d-840a-ef6370fbe398)
+
+## Shared access signatures
+
+- SAS can be created on blob level and container levels
+- all permissions are embeded to the url
+- 3 types of SAS
+- 1.  service SAS provides access to a resource in just one of the storage services: the Blob, Queue, Table, or File service. Created when creating SAS for container level
+  2.  account SAS is similar to a service SAS, but can permit access to resources in more than one storage service. Created when creating SAS for account level
+  3.  user delegation SAS is a SAS secured with Microsoft Entra credentials and can only be used with Blob Storage service.
+
+## Stored Access Policy
+
+- in Container level
+- It will be eaiser to change the permissions since no need to recreate the token url
 
 ## Lifecycle management policies
 
 - Lifecycle management policies are supported for block blobs and append blobs in general-purpose v2, premium block blob, and Blob Storage accounts. Lifecycle management doesn't affect system containers such as the $logs or $web containers.
 - No tier is premium only delete action is available
 - Account level action
+- take 24h to take effect
 - Rule
   ```
   {
@@ -226,36 +266,8 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - Only storage accounts that are configured for LRS, GRS, or RA-GRS support moving blobs to the archive tier. The archive tier isn't supported for ZRS, GZRS, or RA-GZRS accounts. This action gets listed based on the redundancy configured for the account.
 -  Delete operations are free.
 -  Support 100 rules and 10  prefixes
-
-## Anonymouse access
-
-- This can be controller from Storage account and individual container level (private/ blob/ blob and container)
-
-## Cost cutting
-
-- reduce no of rehydrations from archive tier to higher tiers
-- disabled SFTP endpoint
-- Disable unwanted encryption scopes
-- Pack small file and store them on cooler tiers
-
-## Access Keys
-
-- Giving complete access to all storage types (blob, files, queus and tables). Storage account level
- ![image](https://github.com/user-attachments/assets/78bc835f-b585-453d-840a-ef6370fbe398)
-
-## Shared access signatures
-
-- SAS can be created on blob level and container levels
-- all permissions are embeded to the url
-- 3 types of SAS
-- 1.  service SAS provides access to a resource in just one of the storage services: the Blob, Queue, Table, or File service. Created when creating SAS for container level
-  2.  account SAS is similar to a service SAS, but can permit access to resources in more than one storage service. Created when creating SAS for account level
-  3.  user delegation SAS is a SAS secured with Microsoft Entra credentials and can only be used with Blob Storage service.
-
-## Stored Access Policy
-
-- in Container level
-- It will be eaiser to change the permissions since no need to recreate the token url
+-  A lifecycle management policy will not delete the current version of a blob until any previous versions or snapshots associated with that blob have been deleted
+-  Only storage accounts that are configured for LRS, GRS, or RA-GRS support moving blobs to the archive tier. The archive tier isn't supported for ZRS, GZRS, or RA-GZRS accounts.
 
 ## Versioning
 
