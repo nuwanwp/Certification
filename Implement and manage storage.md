@@ -286,6 +286,8 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - Soft delete,Change feed,Blob versioning shoudld be enabled.
 - The retention period for point-in-time restore must be at least one day less than the retention period specified for soft delete.
 - Point-in-time restores support only block blobs, not page or append blobs. While the restore is happening, containers and blobs cannot be read or written to.
+- container cannot be restored with a point-in-time restore operation
+- requires Soft delete,Change feed, Blob versioning to enabled
   
 ## Blob snapshots
 
@@ -337,7 +339,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 -   4. Premium
 
 ## Data encription
-
 - There is no additional cost for Azure Storage encryption.
 - scoped to container level and blob level
 - default encrypted MGK
@@ -363,9 +364,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - It is seperate deployment of private endpoint resource
 - Network routing preference. MS backbone is the most secured and give higher performance
 
-## AZ Copy utility
-
-- Familier with the few command
 
 ## Custom Domain
 
@@ -380,6 +378,10 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - CNAME record: asverify.blobs.contoso.com
 - Intermediate CNAME record: asverify.contosoblobs.blob.core.windows.net
 
+## AZ Copy utility
+- Familier with the few command
+
+  
 ## Premium Storage service
 
 - optimised for low latency and hi speed
@@ -387,7 +389,7 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - Note Account Kind
 - No tier change option
 
-  NOTE
+## NOTE
 
   - We can update Encryption type once account is created.
   - Azure blob container can only be backed up in Azure Backup vault as it supports Azure blob storage service. Azure Recovery service vault on the other hand does not support Azure Blob storage.
