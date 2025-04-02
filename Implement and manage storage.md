@@ -440,23 +440,49 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - Soft delete can be enabled on either new or existing file shares and blobs.
 - The move will fail because CMK-encrypted blobs cannot be moved to Archive. Explanation: CMK-encrypted blobs cannot be moved to the Archive tier because the Archive tier does not support external dependencies like Azure Key Vault
 
-## **File Share**
+## **Azure File Share**
 
-- Lift and shift" applications / Simplify cloud development / Azure file shares as persistent volumes for stateful containers
+- Provides SMB and NFS file shares. NFS for linux
+- this is usefull as file servers, lift and shift apps, diangnotic shares(logs and anylytics), devtest, containerization
 - Mounting methods
-- 1. Direct mount of an Azure file share using SMB or NFS
-- 2. Cache Azure file share on-premises with Azure File Sync
+ 1. Direct mount of an Azure file share using SMB or NFS
+ 2. Cache Azure file share on-premises with Azure File Sync
+    
 - SMB - Premium, transaction optimized, hot, and cool tiers
 - NFS - premium only
+
+- SMB :- windows and linux / Premium, transaction optimized, hot, and cool / LRS, ZRS, GRS, GZRS / Identity-based authentication (Kerberos), shared key authentication / not case sensitive
+- NFS :- only linux / Premium only / LRS,ZRS / Host-based authentication / Case sensitive
+
+- There are two main types of storage accounts
+  1. General purpose version 2 (GPv2)
+  2. FileStorage storage accounts -  Only FileStorage accounts can deploy both SMB and NFS file shares, as NFS is only supported in Premium file shares
+       
 - Methods of authentication
-- 1. On-premises Active Directory Domain Services
-  2. Microsoft Entra Domain Services - Microsoft-managed domain controller that will connect with customer-owned AD
+  1. On-premises Active Directory Domain Services (AD DS, or on-premises AD DS)
+  2. Microsoft Entra Domain Services 
   3. Microsoft Entra Kerberos for hybrid identities - Microsoft Entra Kerberos allows you to use Microsoft Entra ID to authenticate hybrid user identities, which are on-premises AD identities that are synced to the cloud
   4. Active Directory authentication over SMB for Linux clients
   5. Azure storage account key
+     
 - In addition to directly connecting to the file share using the public endpoint or using a VPN/ExpressRoute connection with a private endpoint, SMB provides an additional client access
+- Azure Files currently supports LRS, ZRS, GRS, and GZRS
+
+- SMB File shares
+- SMB Multichannel enables an SMB 3.x client to establish multiple network connections to an SMB file share
+- NTLM v2 (storage keys) and keyberos authentication are allowed
+
+- NFS File Share
+- Windows not supported
+- NFS Azure file shares are only offered on SSD file shares
+- port 2049 to let clients communicate with the NFS Azure file share
+- Azure Files doesn't support encryption in transit with the NFS protocol. You need to disable the Require secure transfer setting on the storage account to use NFS Azure file shares
+- The NFS protocol can only be used from a machine inside of a virtual network
+- NFS file shares are mounted
+
+  
 - Encryption
-- 1. Encryption in transit, which relates to the encryption used when mounting/accessing the Azure file share (default method) (NFS not suppoting this)
+  1. Encryption in transit, which relates to the encryption used when mounting/accessing the Azure file share (default method) (NFS not suppoting this)
   2. Encryption at rest, which relates to how the data is encrypted when it's stored on disk (applies to both the SMB and NFS protocols)
 - Data protection
   ![image](https://github.com/user-attachments/assets/252b6efa-b71c-45cb-957d-60d3c6a0f91d)
@@ -480,10 +506,17 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - 2. Site-to-Site (S2S) VPN, connection to mount your Azure file shares from your on-premises network, without sending data over the open internet.
 - 3. ExpressRoute, which enables you to create a defined route between Azure and your on-premises network that doesn't traverse the internet. Because ExpressRoute provides a dedicated path between your on-premises datacenter and Azure, ExpressRoute can be useful when network performance is a consideration
 
-  ![image](https://github.com/user-attachments/assets/9c6aef9b-d642-4403-83e3-43a111425d16)
+- RBAC roles
+1. Storage File Data SMB Share Reader - Allows for read access to files and directories in Azure file shares
+2. Storage File Data SMB Share Contributor - Allows for read, write, and delete access on files and directories in Azure file shares.
+3. Storage File Data SMB Share Elevated Contributor - Allows for read, write, delete, and modify ACLs on files and directories in Azure file shares
+4. Storage File Data Privileged Contributor - Allows read, write, delete, and modify ACLs in Azure file shares by overriding existing ACLs.
+5. Storage File Data Privileged Reader - Allows read access in Azure file shares by overriding existing ACLs.
+
 
 - Azure Files offers two options for how your data is replicated in the primary region : LRS, GRS
 - Redundancy in a secondary region :- .(GRS or GZRS) for standard SMB file shares. Premium file shares and NFS file shares must use LRS or ZRS.
 - Individual files that are deleted will still be permanently erased. If you want to be able to restore individual files that have been deleted, you can use share snapshots or Azure file share backup.
 - Azure Files supports SMB file shares with snapshots, allowing you to restore or access previous versions of files. You can mount a snapshot on Windows or linux
 - Vaulted backup currently supports only full share recovery to an alternate location. The target File Share selected for restore needs to be empty.
+- The vault tier provides longer retention than the snapshot tier
