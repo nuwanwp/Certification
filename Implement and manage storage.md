@@ -304,6 +304,9 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
   2. Time based retention policy - period
 - If you enable blob soft delete and then configure an immutability policy, any blobs that have already been soft deleted are permanently deleted once the soft delete retention policy is expired. Soft-deleted blobs can be restored during the soft delete retention period. A blob or version that hasn't yet been soft deleted is protected by the immutability policy and can't be soft deleted until after the time-based retention policy is expired or the legal hold is removed.
 - Legal hold and time base retention cannt be enable when having point-in time restore is enabled
+- There are two immutability policies
+1. Version-level immutability cannot be disabled after it is enabled on the storage account, although locked policies can be deleted.
+2. Container level immutability policy
 
 ## Redendency
 
