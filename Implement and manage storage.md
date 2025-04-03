@@ -143,7 +143,6 @@
 - You can't convert an existing standard general-purpose v2 storage account to a premium block blob storage account. migrate data is the option
 
 ## Storage account Restore
-
 - The storage account was deleted within the past 14 days.
 - Should be created using ARM deployment model
 - A new storage account with the same name has not been created
@@ -513,6 +512,10 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 4. Storage File Data Privileged Contributor - Allows read, write, delete, and modify ACLs in Azure file shares by overriding existing ACLs.
 5. Storage File Data Privileged Reader - Allows read access in Azure file shares by overriding existing ACLs.
 
+- Data Transfer
+- Azure File Sync ( allows cloud tiering. Use Azure File Sync if you need a hybrid cloud file solution with bi-directional sync between on-prem file servers and Azure Files./ No direct support for region wise copy. Files must be manually copied to another storage account in the new region)
+- Azure Storage Mover (Use Azure Storage Mover for large-scale migrations of structured data between storage types (e.g., from SMB to Azure Files or from NFS to Azure Blob) / designed for migrating storage across Azure regions.)
+- AzCopy tool (Use AzCopy for fast, scriptable, one-time data transfers between local machines and Azure Storage./  can copy between storage accounts in different regions.)
 
 - Azure Files offers two options for how your data is replicated in the primary region : LRS, GRS
 - Redundancy in a secondary region :- .(GRS or GZRS) for standard SMB file shares. Premium file shares and NFS file shares must use LRS or ZRS.
