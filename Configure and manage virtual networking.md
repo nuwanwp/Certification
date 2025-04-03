@@ -2,6 +2,7 @@
 - IP addreses and CIDR block
 
 ## VNet
+- Free of cost
 - Isolated Network in cloud
 - VNet alway contains 1 or more subnets. default subnet
 - Address space. <network id> . <host ids>
@@ -19,12 +20,14 @@
 ## IP address
 - Public and private
 - Public SKUs
-- 1. standard - support for security, av zones
--  2. basic will expire
+- 1. standard - Secure by default model and be closed to inbound traffic when used as a frontend, av zones
+- 2. basic will - expire / Open by default. Network security groups are recommended
 - Dynamic IP :- assigned when the public IP address is assigned to a resource. released when stop or delete the resource, Dynamic is only available for Basic SKU.
 - Basic SKU support both static and dynamic, while Standard SKU support only Static
 - When creating VM it is creating standard SKU, static ip and attached to the VM
 - If new NIC need to be atttached to exiting VM it should have same region, same vnetand same subnet
+- The Availability zone setting is set to None by default if the public IP address is created in a region that supports availability zones.
+- The Availability zone setting is set to Zone-redundant by default if the IP address is created in a region that supports availability zones
 
 ## NIC
 - NIC cannot be attached to running VM
@@ -37,7 +40,6 @@
 - NSG can be attached to NIC
 - network interface that exists in a subnet can have zero, or one, associated network security groups
 
-  
 ## Least privilage roles
 - Network Contributor - Grants full permissions to manage networks but does not allow modifying security policies or assigning roles.
 - Contributor - Grants full access to manage all Azure resources except permissions (RBAC).
@@ -53,10 +55,10 @@
 - NSG and Subnet must be in the same region.
 - NSG and Subnet can be in different resource groups.
 - NSG and Subnet must be in the same subscription.
-- If you are having NSG attached to subnet and NIC, we need to configure allow rules in both NSGs to communicate
+- If you are having two NSG attached to both subnet and NIC, we need to configure allow rules in both NSGs to communicate
 - If you have VNets in East US and West US, you would need to create and configure separate NSGs for each region, as an NSG created in East US cannot be applied to resources in West US.
-- two VMs in the same subnet can communicate with each other ( only idf no NSG or VM firewall in place)
-- two VMs in different subnets can communicate with each other ( only idf no NSG or VM firewall in place)
+- two VMs in the same subnet can communicate with each other ( only if no NSG or VM firewall in place)
+- two VMs in different subnets can communicate with each other ( only if no NSG or VM firewall in place)
 - if two VNET requires VNet Peering or VPN Gateway
 - Each subnet can have a maximum of one associated network security group
 - By default, network traffic that doesn't match any Network Security Group (NSG) rules is denied
@@ -71,7 +73,8 @@
 - enables secure connection to VM without need of public IP
 - public ip only required for the basition host not vms
 - SKU (developer, basic, Standard and Premium) (developer SKU doesnot support peered VM connections)
-- Standard SKU and higher support auto scaling 
+- Standard SKU and higher support auto scaling
+- Standard SKU and higher support Connect to Linux VM using RDP
 - can't downgrade a SKU after deploying
 - Bastion service will deploy new subnet AzureBastionSubnet ( name is mandatory)
 - Bastion service and communicate within VM without needing any custom rules
@@ -133,9 +136,6 @@
 ## DNS service
 - Azure DNS zone. Map the Azure DNS zone name server in dns provider and return back the azure dns. A record added to the Azure DNS zone record set.
 - Azure private DNS zone is for managing internal DNS resolution.
-- 
-
-
 
 ## Note
 - Route table cannot delete with associated subnet and routes
