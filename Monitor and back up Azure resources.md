@@ -1,3 +1,12 @@
+
+**Monitor and back up Azure resources**
+
+## Azure Backup
+- Offload on-premises backup
+- Back up Azure IaaS VMs
+- Support LRS, GRS, and ZRS
+- Azure Backup helps protect your critical business systems and backup data against a ransomware attack
+ 
  ## Monitor and back up Azure resources
 
 - Azure Monitor Service
