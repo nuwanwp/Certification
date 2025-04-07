@@ -313,5 +313,7 @@ NOTE :-
 - By default, Azure applies a two-gate password reset policy for all administrator accounts. This two-gate policy requires two pieces of authentication data, such as an email address, authenticator app, or phone number, and does not permit the use of security questions for administrators. 
 
 
+Set more focus on RBAC and Azure policy
+
 
 
