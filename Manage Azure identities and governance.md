@@ -237,9 +237,13 @@ Note :- VM should be registed with the EntraNet
 
 
 # Azure policy
-- Can be used to defined the policies.
-- Hepls govern the rules, and define rules in resources to comply by
+- Azure Policy include implementing governance for resource consistency, enforce rules,  regulatory compliance, security, cost, and management
+- Azure Policy evaluates resources and actions in Azure by comparing the properties of those resources to business rules
+- Resource Policy Contributor role includes most Azure Policy operations
+- Owner has full rights
+- Contributor role in Azure cannot edit or update Azure Policies. Required owner or Policy Contributor role 
 - Two types of policies. Allow or Deny
+- policy can be assigned at the management group level, only resources at the subscription or resource group level are evaluated.
 
 # Management groups
 - helps to manage different subscriptions
