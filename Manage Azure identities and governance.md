@@ -138,11 +138,11 @@
 
 -  You must remove all licenses assigned to a group before you can delete the group
 -  license assignment errors on users members of a group when using group based licensing
-1. Not enough licenses
-2. Conflicting service plans
-3. Missing dependent service plans
-4. Usage location not specified - Before you can assign a license to a user, you must specify the Usage location property for the user /When Microsoft Entra ID assigns group licenses, any users without a specified usage location inherit the location of the directory
-5. Duplicate proxy addresses
+  1. Not enough licenses
+  2. Conflicting service plans
+  3. Missing dependent service plans
+  4. Usage location not specified - Before you can assign a license to a user, you must specify the Usage location property for the user /When Microsoft Entra ID assigns group licenses, any users without a specified usage location inherit the location of the directory
+  5. Duplicate proxy addresses
 
 # Entra ID licenses
 - Free / P1/ P2
@@ -179,7 +179,7 @@
 - Global Administrator - Can manage all aspects of Microsoft Entra ID and Microsoft services that use Microsoft Entra identities.
 - User who creates a Microsoft Entra tenant is automatically assigned the Global Administrator role
 
- ## Diffrence of Azure role and Entra ID role
+ # Diffrence of Azure role and Entra ID role
  - Azure resources at different levels:
  - 1. Subscription
    2. Resource Group
@@ -195,28 +195,17 @@
 -  Manage B2B collaboration is inviting guest users to partificate with Entra Id. users is typically set to "guest" 
   
 # Self service password reset
--  Rquire p1 or p2 license
--  onoprem write back to their AD
+- Rquire p1 or p2 license
+- onoprem write back to their AD
 - Password reset policy can be assigned to all users or groups or selected users
 
 # Entra ID monitoring
-- View:
- 1. Monitoring Reader
- 2. Log Analytics Reader
-    
- - View and modify settings: 
-  1. Monitoring Contributor
-  2. Log Analytics Contributor
+- View: Monitoring Reader / Log Analytics Reader roles required    
+- View and modify settings: Monitoring Contributor/ Log Analytics Contributor
+- Read: Reports Reader / Security Reader / Global Reader
+- Update: Security Administrator
 
-- Read:
-1. Reports Reader
-2. Security Reader
-3. Global Reader
-
--Update:
-1. Security Administrator
-
-## RBAC
+# RBAC
 - Can assign permission on subscription level, resource group level or resource it self
 - Data actions means what we can perform on data within a resource
 - Once a user is restored, licenses that were assigned to the user at the time of deletion are also restored 
