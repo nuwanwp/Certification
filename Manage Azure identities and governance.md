@@ -310,7 +310,10 @@ NOTE :-
 - From Cross-tenant access settings, configure the Tenant restrictions settings - to specify which tenants users can access
 - External collaboration settings, configure the Collaboration restrictions settings - you can ensure that invitations can only be sent to users from that domain
 - Standard SKU Azure container registry doesnot support geo-replication. only the premium ones
-- By default, Azure applies a two-gate password reset policy for all administrator accounts. This two-gate policy requires two pieces of authentication data, such as an email address, authenticator app, or phone number, and does not permit the use of security questions for administrators. 
+- By default, Azure applies a two-gate password reset policy for all administrator accounts. This two-gate policy requires two pieces of authentication data, such as an email address, authenticator app, or phone number, and does not permit the use of security questions for administrators.
+
+  https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview
+  https://learn.microsoft.com/en-us/azure/role-based-access-control/custom-roles-powershell
 
 
 Set more focus on RBAC and Azure policy
