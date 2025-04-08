@@ -1,7 +1,4 @@
-## **Implement and manage storage**
-
-## Properties
-
+## Implement and manage storage
 - Components of blob storage account
 - ![image](https://github.com/user-attachments/assets/b5390c06-d298-4242-bb79-7e77ae82bbaa)
 - UNC path :- http://mystorageaccount.blob.core.windows.net/container/file
@@ -120,14 +117,12 @@
 - Recall each endpoint UNC path for each type
 
 ## Storage account Migrate a storage account
-
 - 1. Move a storage account to a different subscription - ok
   2. Move a storage account to a different resource group - ok
   3. Move a storage account to a different region - recreate -azcopy to migrate data
   4. Upgrade to a general-purpose v2 storage account - ok
 
 ## Storage account billing
-
 - 1. Region
   2. Account ytpe
   3. Acces Tier
@@ -163,7 +158,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - Locking a storage account does not protect containers or blobs within that account from being deleted or overwritten
 
 ## Storage data movement
-
 - azcopy copy 'C:\myDirectory' 'https://mystorageaccount.dfs.core.windows.net/mycontainer' --include-path 'photos;documents\myFile.txt' --recursive'
 
 ##  block blobs
@@ -179,25 +173,20 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - SAS also same as container level and blob level
 
 
-
 ## Anonymouse access
-
 - This can be controller from Storage account and individual container level (private/ blob/ blob and container)
 
 ## Cost cutting
-
 - reduce no of rehydrations from archive tier to higher tiers
 - disabled SFTP endpoint
 - Disable unwanted encryption scopes
 - Pack small file and store them on cooler tiers
 
 ## Access Keys
-
 - Giving complete access to all storage types (blob, files, queus and tables). Storage account level
  ![image](https://github.com/user-attachments/assets/78bc835f-b585-453d-840a-ef6370fbe398)
 
 ## Shared access signatures
-
 - SAS can be created on blob level and container levels
 - all permissions are embeded to the url
 - 3 types of SAS
@@ -206,12 +195,10 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
   3.  user delegation SAS is a SAS secured with Microsoft Entra credentials and can only be used with Blob Storage service.
 
 ## Stored Access Policy
-
 - in Container level
 - It will be eaiser to change the permissions since no need to recreate the token url
 
 ## Lifecycle management policies
-
 - Lifecycle management policies are supported for block blobs and append blobs in general-purpose v2, premium block blob, and Blob Storage accounts. Lifecycle management doesn't affect system containers such as the $logs or $web containers.
 - No tier is premium only delete action is available
 - Account level action
@@ -269,7 +256,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 -  Only storage accounts that are configured for LRS, GRS, or RA-GRS support moving blobs to the archive tier. The archive tier isn't supported for ZRS, GZRS, or RA-GZRS accounts.
 
 ## Versioning
-
 - Soft delete is feature available in Account level and it effect to both blob level and container level
 - Blob versioning is available for general-purpose v2, block blob, and Blob storage accounts
 - Versioning is not supported for accounts that have a hierarchical namespace.
@@ -280,7 +266,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - Microsoft recommends that after you enable blob versioning, you also update your application to stop taking snapshots of block blobs. No point of having snapshot it will increase the cost
 
 ## Point-in-time restore
-
 - Only block blobs in a standard general-purpose v2 storage account can be restored as part of a point-in-time restore operation. Containers doesn'y support
 - Soft delete,Change feed,Blob versioning shoudld be enabled.
 - The retention period for point-in-time restore must be at least one day less than the retention period specified for soft delete.
@@ -289,7 +274,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - requires Soft delete,Change feed, Blob versioning to enabled
   
 ## Blob snapshots
-
 - A snapshot is a read-only version of a blob that's taken at a point in time.
 - A snapshot of a blob is identical to its base blob, except that the blob URI has a DateTime value appended to the blob URI to indicate the time at which the snapshot was taken
  http://storagesample.core.blob.windows.net/mydrives/myvhd?snapshot=2011-03-09T01:42:34.9360000Z
@@ -297,7 +281,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - By default, when you delete a base blob in Azure Blob Storage, all of its snapshots are deleted as well.
 
 ## Immutable Storage
-
 - Container level policy and version level policy
 - Policy which defined to restrict the modification.
 - 1. Legal hold - we have remove it once completed
@@ -309,7 +292,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 2. Container level immutability policy
 
 ## Redendency
-
 - LRS - 3 copies in single data center / easily reconstructed if data loss occurs / region due to data governance requirements
 - ZRS - replicates the data within your storage accounts to three or more Azure availability zones located in the primary region / excellent performance, low latency, and resiliency for your data
 - GRS - copies your data synchronously three times to one or more availability zones in the primary region , three copies of data avaible in secondary region. (paired region)
@@ -319,7 +301,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - Page blobs LRS olny
 
 ## Object replication
-
 - asyn operation | rule based
 - source and dest should be Gen Purpose V2 or Premium (replication from General-Purpose v2 (GPv2) to Premium storage is not supported)
 - Both ends versioning should be enabled
@@ -334,7 +315,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - Changing the access tier of a blob in the source account won't change the access tier of that blob in the destination account.
 
 ## Azure FIle share types
-
 - 1. Transaction optimized
 -  2. Hot
 -  3. Cool
@@ -355,7 +335,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - Keep in mind that customer-managed keys are protected by soft delete and purge protection in the key vault
 
 ## Networking
-
 - Has a firewall
 - Service endpoints (enable connection between VM and storage account)
 - Private Endpoints :- brinng all the way in Vnet. private communication is possible withn Vnet
@@ -368,7 +347,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 
 
 ## Custom Domain
-
 - two ways to configure a custom domain
 - 1. Direct mapping - lets you enable a custom domain for a subdomain to an Azure storage account. For this approach, you create a CNAME record that points from the subdomain to the Azure storage account
   - Subdomain: blobs.contoso.com
@@ -385,14 +363,12 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 
   
 ## Premium Storage service
-
 - optimised for low latency and hi speed
 - only LRS and ZRS
 - Note Account Kind
 - No tier change option
 
 ## NOTE
-
   - We can update Encryption type once account is created.
   - Azure blob container can only be backed up in Azure Backup vault as it supports Azure blob storage service. Azure Recovery service vault on the other hand does not support Azure Blob storage.
   - Azure file share can only be backed up in Azure RS vault as it supports Azure file share service. Azure Backup vault on the other hand does not support Azure File Share.
@@ -443,7 +419,6 @@ NOTE :- Data in Azure Files or the Table service may become unaccessible to clie
 - The move will fail because CMK-encrypted blobs cannot be moved to Archive. Explanation: CMK-encrypted blobs cannot be moved to the Archive tier because the Archive tier does not support external dependencies like Azure Key Vault
 
 ## **Azure File Share**
-
 - Provides SMB and NFS file shares. NFS for linux
 - this is usefull as file servers, lift and shift apps, diangnotic shares(logs and anylytics), devtest, containerization
 - Mounting methods
