@@ -1,4 +1,3 @@
-
 **Monitor and back up Azure resources**
 
 ## Azure Backup
@@ -38,7 +37,7 @@
 
 ## VM backup
  - Back of VM are stored in recovery vaults
- - Duting VM back it takes snapshot and saved in VM it self
+ - Duting VM back it takes snapshot and saved in VM it self. Two backend tasks (Take snapshots, Transfer data to vault)
  - Both VM and recovery service vault should be same region
 1. create recovery service vault
 2. VM backup -> select the vault -> select policy sub type (Enhanced / Standard)
@@ -49,15 +48,18 @@
 - This is how to take VM snapshot within the VM
 - It creates restore points as well ( There are two options (file recovery and Restore VM)
 - BY using file recovery we not connecting to the VM. COnneting only to the restore point
+- The default policy backs up the VM once a day. The daily backups are retained for 30 days
+- When click on Enable backup, It will install backup agent running on VM
 
 ## VM restore
 - It is required to have Azure storage account in the same region as the VM and service vault
 - Either create new VM / Restore VM disk to create new VM
 - Storage account is required
 - You can backup and restore ADE encrypted VMS within the same subscription
-- ADE encrypted VMS cannot recovered at file filder level
+- ADE encrypted VMS cannot recovered at file folder level
   
 ## Recovery service agent
+- MABS is an on-premises backup solution
 - Download recovery service agent from the Service Vault properties page
 - Install them on VM
 - Register the vault and configure
