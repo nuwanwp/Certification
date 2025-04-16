@@ -120,6 +120,8 @@
 - Resource group move operations (within same subscription) are supported for Standard Load Balancer and Standard Public IP.
 - Subscription move operations are not supported for Standard Load Balancers.
 
+![image](https://github.com/user-attachments/assets/d8f7c8cf-84ea-47c9-b7ef-f80b0cb4137a)
+
 ## NAT rules
 - how to login to backend pool machines. since we donot have public ips
 - go to LB add inbound NAT rule / then take the public ip (which lb assign to it ) and connet to VM
